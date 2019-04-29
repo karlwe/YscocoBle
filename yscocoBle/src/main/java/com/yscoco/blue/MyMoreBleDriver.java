@@ -52,9 +52,11 @@ public class MyMoreBleDriver extends BaseMoreBleDriver {
         bundle.putString("uuid",uuid);
         bundle.putByteArray("value",data);
         bundle.putString("data",b.toString());
+        bundle.putString("mac", address);
         msg.setData(bundle);
         msg.what = what;
-        handlerMsg(address,msg);
+//        handlerMsg(address,msg);
+        mHandler.sendMessage(msg);
     }
 
     @Override
