@@ -15,6 +15,7 @@ import android.os.Message;
 import com.yscoco.blue.base.BaseBtManager;
 import com.yscoco.blue.base.HandleDriver;
 import com.yscoco.blue.enums.DeviceState;
+import com.yscoco.blue.exception.BleException;
 import com.yscoco.blue.utils.FileWriteUtils;
 import com.yscoco.blue.utils.LogBlueUtils;
 
@@ -300,9 +301,8 @@ public class MyBtManager extends BaseBtManager {
         public void onDescriptorWrite(BluetoothGatt gatt, BluetoothGattDescriptor descriptor, int status) {
             super.onDescriptorWrite(gatt, descriptor, status);
             if (status != BluetoothGatt.GATT_SUCCESS) {
-                LogBlueUtils.d("开启notify失败");
                 disConnect(mMac,true);
-                return;
+                throw new BleException("开启 BluetoothGattCharacteristic UUID为"+descriptor.getCharacteristic().getUuid().toString().toUpperCase()+"notify异常");
             }
             LogBlueUtils.d("开启notify成功"+descriptor.getCharacteristic().getUuid().toString().toUpperCase());
             for(int i=0;i<BleManage.getInstance().getBleConfig().getNotifyList().size();i++){
@@ -367,9 +367,16 @@ public class MyBtManager extends BaseBtManager {
         }
         BluetoothGattService service = mBluetoothGatt.getService(UUID.fromString(serviceUUID));
         if (service != null) {
-            return service.getCharacteristic(UUID.fromString(characterUUID));
+            BluetoothGattCharacteristic c1 = service.getCharacteristic(UUID.fromString(characterUUID));
+            if(c1==null){
+                disConnect(mMac,false);
+                throw new BleException("BluetoothGattCharacteristic UUID为"+characterUUID+"的通道不存在");
+            }
+            return c1;
+        }else{
+            disConnect(mMac,false);
+            throw new BleException("BluetoothGattService UUID为"+serviceUUID+"的服务不存在");
         }
-        return null;
     }
 
     /**
@@ -387,10 +394,12 @@ public class MyBtManager extends BaseBtManager {
 //                readCharacteristic(serviceUUID, charaterUUID);
                 if ((cx1 | BluetoothGattCharacteristic.PROPERTY_NOTIFY) > 0) {
                     setCharacteristicNotification(c1, true);
+                }else{
+                    disConnect(mMac,false);
+                    throw new BleException("BluetoothGattService UUID为"+serviceUUID+",BluetoothGattCharacteristic UUID为"+charaterUUID+"没有notify权限");
                 }
             }
         }else{
-            LogBlueUtils.e("开启通知的通道不存在");
             disConnect(mMac,true);
         }
     }
@@ -421,9 +430,15 @@ public class MyBtManager extends BaseBtManager {
         // Log.e("taa","开启了广播");
         LogBlueUtils.d("开启广播");
         BluetoothGattDescriptor descriptor = characteristic.getDescriptor(UUID.fromString(DES_UUID1));
+
         if (descriptor != null&&mBluetoothGatt!=null) {
             descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
             mBluetoothGatt.writeDescriptor(descriptor);
+        }else{
+            if(descriptor==null){
+                disConnect(mMac,false);
+                throw new BleException("BluetoothGattDescriptor UUID为"+DES_UUID1+"的特征值不存在");
+            }
         }
     }
 

@@ -7,7 +7,7 @@ package com.yscoco.blue.exception;
  * QQ：2736764338
  * 类介绍：蓝牙连接异常
  */
-public class BleException extends Exception {
+public class BleException extends RuntimeException {
     public BleException() {
         super();
     }
