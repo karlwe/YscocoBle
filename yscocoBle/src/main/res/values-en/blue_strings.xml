@@ -1,4 +1,4 @@
-<resources>
+﻿<resources>
     <string name="connect_text">Connect</string>
     <string name="connected_text">Connected</string>
     <string name="disconnect_text">Disconnected</string>
