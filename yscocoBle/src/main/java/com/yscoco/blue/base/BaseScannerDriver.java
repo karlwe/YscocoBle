@@ -148,6 +148,15 @@ public abstract class BaseScannerDriver implements ScannerDriver {
                         handlerMsg(BleScannerState.CLOSE_SCANNER);
                     }
                     break;
+                case 3:
+                    stop();
+                    mHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            scan(scanName,scanType);
+                        }
+                    },2000);
+                    break;
             }
         }
     };
@@ -184,9 +193,10 @@ public abstract class BaseScannerDriver implements ScannerDriver {
         public void onScanFailed(int errorCode) {
             super.onScanFailed(errorCode);
             FileWriteUtils.initWrite("BaseScannerDriver：蓝牙扫描callback50 onScanFailed");
-            LogBlueUtils.d("ScanCallback:onScanFailed");
-            isScan = false;
-            scanState();
+            LogBlueUtils.d("ScanCallback:onScanFailed,errorCode:"+errorCode);
+            Message msg = new Message();
+            msg.what = 3;
+            mHandler.sendMessage(msg);
         }
 
         @Override
