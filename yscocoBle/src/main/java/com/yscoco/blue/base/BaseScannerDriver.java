@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.le.ScanCallback;
+import android.bluetooth.le.ScanFilter;
 import android.bluetooth.le.ScanResult;
 import android.bluetooth.le.ScanSettings;
 import android.os.Build;
@@ -20,6 +21,7 @@ import com.yscoco.blue.imp.ScannerDriver;
 import com.yscoco.blue.utils.FileWriteUtils;
 import com.yscoco.blue.utils.LogBlueUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static android.bluetooth.le.ScanSettings.SCAN_MODE_BALANCED;
@@ -72,7 +74,9 @@ public abstract class BaseScannerDriver implements ScannerDriver {
             bleManage.getBluetoothAdapter().startLeScan(callBack43);
             FileWriteUtils.initWrite("BaseScannerDriver：蓝牙扫描监听回调callBack43");
         }else{
-            bleManage.getBluetoothAdapter().getBluetoothLeScanner().startScan(null,scanSettings,callBack50);
+            List<ScanFilter> filters = new ArrayList<>();
+            filters.add(new ScanFilter.Builder().build());
+            bleManage.getBluetoothAdapter().getBluetoothLeScanner().startScan(filters,scanSettings,callBack50);
             FileWriteUtils.initWrite("BaseScannerDriver：蓝牙扫描监听回调callBack50");
         }
     }
