@@ -154,12 +154,6 @@ public abstract class BaseScannerDriver implements ScannerDriver {
                     break;
                 case 3:
                     stop();
-                    mHandler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            scan(scanName,scanType);
-                        }
-                    },2000);
                     break;
             }
         }
