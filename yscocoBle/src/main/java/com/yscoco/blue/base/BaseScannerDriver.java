@@ -18,6 +18,7 @@ import com.yscoco.blue.bean.BlueDevice;
 import com.yscoco.blue.enums.BleScannerState;
 import com.yscoco.blue.enums.ScanNameType;
 import com.yscoco.blue.imp.ScannerDriver;
+import com.yscoco.blue.utils.BleUtils;
 import com.yscoco.blue.utils.FileWriteUtils;
 import com.yscoco.blue.utils.LogBlueUtils;
 
@@ -163,11 +164,10 @@ public abstract class BaseScannerDriver implements ScannerDriver {
     BluetoothAdapter.LeScanCallback callBack43 = new BluetoothAdapter.LeScanCallback() {
         @Override
         public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
-            LogBlueUtils.i("ScanCallback:onLeScan:"+device.getName()+device.getAddress());
             if(device.getName()==null){
                 return;
             }
-            LogBlueUtils.d("ScanCallback:onLeScan:"+device.getName()+device.getAddress());
+            LogBlueUtils.d("ScanCallback:onLeScan:"+device.getName()+device.getAddress()+":"+ BleUtils.toHexString(scanRecord));
             onScan(device, scanRecord,rssi);
         }
     };

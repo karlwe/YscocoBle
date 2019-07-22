@@ -16,7 +16,7 @@ public class BleUtils {
     public static byte[] hexStringToByte(String hex) {
         int len = (hex.length() / 2);
         byte[] result = new byte[len];
-        char[] achar = hex.toCharArray();
+        char[] achar = hex.toUpperCase().toCharArray();
         for (int i = 0; i < len; i++) {
             int pos = i * 2;
             result[i] = (byte) (toByte(achar[pos]) << 4 | toByte(achar[pos + 1]));
@@ -38,7 +38,7 @@ public class BleUtils {
         for (int i = 0; i < b.length; ++i){
             buffer.append(toHexString(b[i]));
         }
-        return buffer.toString();
+        return buffer.toString().toUpperCase();
     }
     /**
      * byte转成十六进制字符串
@@ -50,7 +50,7 @@ public class BleUtils {
         if (s.length() == 1){
             return "0" + s;
         }else{
-            return s;
+            return s.toUpperCase();
         }
     }
 }
