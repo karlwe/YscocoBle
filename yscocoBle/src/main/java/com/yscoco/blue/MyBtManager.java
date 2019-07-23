@@ -72,19 +72,6 @@ public class MyBtManager extends BaseBtManager {
         mMac = mac;
         mBlueDriver = blueDriver;
         this.mDevice = mDevice;
-//        // 增加读rssi 的定时器F
-//        task = new TimerTask() {
-//            @Override
-//            public void run() {
-//                if (isConnect()&&mBluetoothGatt!=null) {
-//                    mBluetoothGatt.readRemoteRssi();
-//                }
-//            }
-//        };
-//        rssiTimer = new Timer();
-//        if(task!=null){
-//            rssiTimer.schedule(task, 10, 1000);
-//        }
     }
     public BluetoothDevice getmDevice() {
         return mDevice;

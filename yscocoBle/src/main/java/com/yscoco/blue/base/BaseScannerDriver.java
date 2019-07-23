@@ -61,12 +61,13 @@ public abstract class BaseScannerDriver implements ScannerDriver {
         this.scanType = type;
         if(isScan){
             FileWriteUtils.initWrite("ScanCallback：蓝牙广播已经开启扫描");
-            LogBlueUtils.d("已经开启扫描");
+            LogBlueUtils.d("ScanCallback：蓝牙广播已经开启扫描");
             return ;
         }
         if(!bleManage.isEnableBluetooth()){
             bleManage.enableBluetooth();
             FileWriteUtils.initWrite("ScanCallback：蓝牙开关状态关闭，重启中");
+            LogBlueUtils.d("ScanCallback：蓝牙开关状态关闭，重启中");
             return ;
         }
         isScan = true;

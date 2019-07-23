@@ -25,6 +25,8 @@ public class BleConfig {
      *写数据 UUID
      */
     public String CHA_WRITE = "6E400002-B5A3-F393-E0A9-E50E24DCCA9F";
+    public String PROJECT_NAME = "yscoco";
+    public boolean isCloseFile = false;/*是否关闭本地文件日志*/
     public List<NotifyUUIDBean> notifyList = new ArrayList<NotifyUUIDBean>();
     /**
      *多Notify硬件配置构造方法，需要额外配置主通知和回调接口
@@ -73,5 +75,21 @@ public class BleConfig {
 
     public void setNotifyList(List<NotifyUUIDBean> notifyList) {
         this.notifyList = notifyList;
+    }
+
+    public String getPROJECT_NAME() {
+        return PROJECT_NAME;
+    }
+
+    public void setPROJECT_NAME(String PROJECT_NAME) {
+        this.PROJECT_NAME = PROJECT_NAME;
+    }
+
+    public boolean isCloseFile() {
+        return isCloseFile;
+    }
+
+    public void setCloseFile(boolean closeFile) {
+        isCloseFile = closeFile;
     }
 }

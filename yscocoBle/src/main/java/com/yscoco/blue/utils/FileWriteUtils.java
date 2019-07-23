@@ -2,6 +2,8 @@ package com.yscoco.blue.utils;
 
 import android.util.Log;
 
+import com.yscoco.blue.BleManage;
+
 import java.io.File;
 import java.io.RandomAccessFile;
 import java.text.ParseException;
@@ -30,9 +32,9 @@ public class FileWriteUtils {
                 for(File file:files) {
                     String fileName = file.getName();
                     LogBlueUtils.d("文件名称" + fileName);
-                    if((!fileName.equals((getDate(0)+".txt")))
-                            &&(!fileName.equals((getDate(-1)+".txt")))
-                            &&(!fileName.equals((getDate(-2)+".txt")))
+                    if((!fileName.contains((getDate(0)+".txt")))
+                            &&(!fileName.contains((getDate(-1)+".txt")))
+                            &&(!fileName.contains((getDate(-2)+".txt")))
                             ){
                         LogBlueUtils.d("文件名称删除" +fileName );
                         file.delete();
@@ -41,14 +43,24 @@ public class FileWriteUtils {
             }
         }
     }
+    public synchronized static  void initWrite(String value,String fileNameStart) {
+        String filePath = filePaths;
+        String fileName = fileNameStart+getDate(0)+".txt";
+
+        writeTxtToFile(value, filePath, fileName);
+    }
     public synchronized static  void initWrite(String value) {
         String filePath = filePaths;
-        String fileName = "yscocoBlue"+getDate(0)+".txt";
-
+        String fileName = BleManage.getInstance().getBleConfig().getPROJECT_NAME()+getDate(0)+".txt";
+        deleteFile();
         writeTxtToFile(value, filePath, fileName);
     }
     // 将字符串写入到文本文件中
     public synchronized static void writeTxtToFile(String strcontent, String filePath, String fileName) {
+        /*判断是否开启了本地文件写入*/
+        if(BleManage.getInstance().getBleConfig().isCloseFile()) {
+            return;
+        }
         //生成文件夹之后，再生成文件，不然会出错
         makeFilePath(filePath, fileName);
 
