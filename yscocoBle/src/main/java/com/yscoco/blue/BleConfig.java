@@ -1,6 +1,7 @@
 package com.yscoco.blue;
 
 import com.yscoco.blue.bean.NotifyUUIDBean;
+import com.yscoco.blue.utils.LogBlueUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,5 +92,8 @@ public class BleConfig {
 
     public void setCloseFile(boolean closeFile) {
         isCloseFile = closeFile;
+    }
+    public void setBleLog(boolean isLog,String LogStart){
+        LogBlueUtils.setLog(isLog,LogStart);/*设置BLe状态*/
     }
 }
