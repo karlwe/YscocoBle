@@ -17,15 +17,15 @@ public class BleConfig {
     /**
      * service UUID
      */
-    public String SERVICE_UUID1 = "6E400001-B5A3-F393-E0A9-E50E24DCCA9F";
+    public String SERVICE_UUID1 = "0000FFF0-0000-1000-8000-00805F9B34FB";
     /**
      * 通知 UUID
      */
-    public String CHA_NOTIFY = "6E400003-B5A3-F393-E0A9-E50E24DCCA9F";
+    public String CHA_NOTIFY = "0000FFF4-0000-1000-8000-00805F9B34FB";
     /**
      *写数据 UUID
      */
-    public String CHA_WRITE = "6E400002-B5A3-F393-E0A9-E50E24DCCA9F";
+    public String CHA_WRITE = "0000FFF4-0000-1000-8000-00805F9B34FB";
     public String PROJECT_NAME = "yscoco";
     public boolean isCloseFile = false;/*是否关闭本地文件日志*/
     public List<NotifyUUIDBean> notifyList = new ArrayList<NotifyUUIDBean>();

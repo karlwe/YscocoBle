@@ -17,6 +17,7 @@ import com.yscoco.blue.BleManage;
 import com.yscoco.blue.bean.BlueDevice;
 import com.yscoco.blue.enums.BleScannerState;
 import com.yscoco.blue.enums.ScanNameType;
+import com.yscoco.blue.exception.BleException;
 import com.yscoco.blue.imp.ScannerDriver;
 import com.yscoco.blue.utils.BleUtils;
 import com.yscoco.blue.utils.FileWriteUtils;
@@ -154,9 +155,6 @@ public abstract class BaseScannerDriver implements ScannerDriver {
                         handlerMsg(BleScannerState.CLOSE_SCANNER);
                     }
                     break;
-                case 3:
-                    stop();
-                    break;
             }
         }
     };
@@ -193,9 +191,7 @@ public abstract class BaseScannerDriver implements ScannerDriver {
             super.onScanFailed(errorCode);
             FileWriteUtils.initWrite("ScanCallback：蓝牙扫描callback50 onScanFailed");
             LogBlueUtils.d("ScanCallback:onScanFailed,errorCode:"+errorCode);
-            Message msg = new Message();
-            msg.what = 3;
-            mHandler.sendMessage(msg);
+            throw new BleException("ScanCallback:onScanFailed,errorCode:"+errorCode);
         }
 
         @Override
