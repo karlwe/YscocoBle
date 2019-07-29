@@ -52,7 +52,6 @@ public class FileWriteUtils {
     public synchronized static  void initWrite(String value) {
         String filePath = filePaths;
         String fileName = BleManage.getInstance().getBleConfig().getPROJECT_NAME()+getDate(0)+".txt";
-        deleteFile();
         writeTxtToFile(value, filePath, fileName);
     }
     // 将字符串写入到文本文件中
