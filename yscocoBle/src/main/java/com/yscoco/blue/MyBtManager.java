@@ -274,7 +274,9 @@ public class MyBtManager extends BaseBtManager {
                 }
                 LogBlueUtils.d("onCharacteristicRead："+mMac+"数据为" + b.toString());
                 mBlueDriver.dataHandler(uuid,mMac,data,READ_VALUE);
-                return;
+            }else{
+                disConnect(mMac,true);
+                LogBlueUtils.e("onCharacteristicRead:失败,characteristic.getService()UUID:"+characteristic.getService().getUuid().toString()+",BluetoothGattCharacteristic UUID:"+characteristic.getUuid().toString());
             }
         }
 
