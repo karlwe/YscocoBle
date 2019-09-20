@@ -166,7 +166,7 @@ public abstract class BaseScannerDriver implements ScannerDriver {
             if(device.getName()==null){
                 return;
             }
-            LogBlueUtils.d("ScanCallback:onLeScan:"+device.getName()+device.getAddress()+":"+ BleUtils.toHexString(scanRecord));
+            LogBlueUtils.i("ScanCallback:onLeScan:"+device.getName()+device.getAddress()+":"+ BleUtils.toHexString(scanRecord));
             onScan(device, scanRecord,rssi);
         }
     };
