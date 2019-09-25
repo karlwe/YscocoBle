@@ -31,12 +31,10 @@ public class FileWriteUtils {
             if(files!=null){
                 for(File file:files) {
                     String fileName = file.getName();
-                    LogBlueUtils.d("文件名称" + fileName);
                     if((!fileName.contains((getDate(0)+".txt")))
                             &&(!fileName.contains((getDate(-1)+".txt")))
                             &&(!fileName.contains((getDate(-2)+".txt")))
                             ){
-                        LogBlueUtils.d("文件名称删除" +fileName );
                         file.delete();
                     }
                 }

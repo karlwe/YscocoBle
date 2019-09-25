@@ -10,6 +10,7 @@ import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothProfile;
 import android.content.Context;
+import android.os.Handler;
 import android.os.Message;
 
 import com.yscoco.blue.base.BaseBtManager;
@@ -67,6 +68,7 @@ public class MyBtManager extends BaseBtManager {
     protected Context mContext;
     private BluetoothDevice mDevice;
     private HandleDriver mBlueDriver;
+    private Handler mHandler = new Handler();
     public MyBtManager(Context c, String mac, BluetoothDevice mDevice, HandleDriver blueDriver) {
         mContext = c;
         mMac = mac;
@@ -197,10 +199,19 @@ public class MyBtManager extends BaseBtManager {
             FileWriteUtils.initWrite("连接回调：status" + status + "，newState" + newState + "," + gatt.getDevice().getAddress());
             if (status == BluetoothGatt.GATT_SUCCESS && newState == BluetoothProfile.STATE_CONNECTED) {
                 FileWriteUtils.initWrite("设备连接"+this.toString());
-                //已连接
-                mBluetoothGatt.discoverServices();
+                deviceState = DeviceState.CONNECT;
+                isDisconnected = false;
+                mBlueDriver.sendMessage(mMac,CONNECTED);
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        //已连接
+                        mBluetoothGatt.discoverServices();
+                    }
+                },500);
             } else {//已断开
                 FileWriteUtils.initWrite("设备断开连接"+this.toString()+"是否重连"+isReconnect());
+                mHandler.removeCallbacksAndMessages(null);
                 deviceState = DeviceState.DISCONNECT;
                 mBluetoothGatt.close();
                 mBluetoothGatt = null;
@@ -219,9 +230,6 @@ public class MyBtManager extends BaseBtManager {
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 LogBlueUtils.d("发现服务成功");
                 FileWriteUtils.initWrite("发现服务成功");
-                deviceState = DeviceState.CONNECT;
-                isDisconnected = false;
-                mBlueDriver.sendMessage(mMac,CONNECTED);
 //                mBlueDriver.sendMessage(mMac, MyMoreBleDriver.MSG, "设备连接成功");
                 List<BluetoothGattService> services =  gatt.getServices();
                 for(BluetoothGattService service:services){

@@ -182,7 +182,7 @@ public abstract class BaseScannerDriver implements ScannerDriver {
             if(device.getName()==null){
                 return;
             }
-            LogBlueUtils.d("ScanCallback:onScanResult"+device.getName()+device.getAddress());
+            LogBlueUtils.i("ScanCallback:onScanResult"+device.getName()+device.getAddress());
             onScan(device, scanRecord,rssi);
         }
 
