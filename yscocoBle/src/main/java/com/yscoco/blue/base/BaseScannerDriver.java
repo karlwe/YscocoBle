@@ -187,11 +187,11 @@ public abstract class BaseScannerDriver implements ScannerDriver {
         }
 
         @Override
-        public void onScanFailed(int errorCode) {
+        public void onScanFailed(int errorCode){
             super.onScanFailed(errorCode);
             FileWriteUtils.initWrite("ScanCallback：蓝牙扫描callback50 onScanFailed");
             LogBlueUtils.d("ScanCallback:onScanFailed,errorCode:"+errorCode);
-            throw new BleException("ScanCallback:onScanFailed,errorCode:"+errorCode);
+            LogBlueUtils.w("ScanCallback:onScanFailed,errorCode:"+errorCode);
         }
 
         @Override

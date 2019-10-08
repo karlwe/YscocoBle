@@ -23,7 +23,7 @@ public class MyScannerDriver extends BaseScannerDriver{
     private static MyScannerDriver myDriver ;
     public static  MyScannerDriver getInstance(BleManage bleManage){
         if(myDriver==null){
-            synchronized (MyMoreBleDriver.class) {
+            synchronized (MyScannerDriver.class) {
                 if(myDriver==null) {
                     myDriver = new MyScannerDriver(bleManage);
                 }

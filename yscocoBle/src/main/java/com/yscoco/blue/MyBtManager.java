@@ -299,7 +299,7 @@ public class MyBtManager extends BaseBtManager {
             super.onDescriptorWrite(gatt, descriptor, status);
             if (status != BluetoothGatt.GATT_SUCCESS) {
                 disConnect(mMac,true);
-                throw new BleException("开启 BluetoothGattCharacteristic UUID为"+descriptor.getCharacteristic().getUuid().toString().toUpperCase()+"notify异常");
+                LogBlueUtils.w("开启 BluetoothGattCharacteristic UUID为"+descriptor.getCharacteristic().getUuid().toString().toUpperCase()+"notify异常");
             }
             LogBlueUtils.d("开启notify成功"+descriptor.getCharacteristic().getUuid().toString().toUpperCase());
             for(int i=0;i<BleManage.getInstance().getBleConfig().getNotifyList().size();i++){
@@ -367,12 +367,13 @@ public class MyBtManager extends BaseBtManager {
             BluetoothGattCharacteristic c1 = service.getCharacteristic(UUID.fromString(characterUUID));
             if(c1==null){
                 disConnect(mMac,false);
-                throw new BleException("BluetoothGattCharacteristic UUID为"+characterUUID+"的通道不存在");
+                LogBlueUtils.w("BluetoothGattCharacteristic UUID为"+characterUUID+"的通道不存在");
             }
             return c1;
         }else{
             disConnect(mMac,false);
-            throw new BleException("BluetoothGattService UUID为"+serviceUUID+"的服务不存在");
+            LogBlueUtils.w("BluetoothGattService UUID为"+serviceUUID+"的服务不存在");
+            return null;
         }
     }
 
@@ -393,7 +394,7 @@ public class MyBtManager extends BaseBtManager {
                     setCharacteristicNotification(c1, true);
                 }else{
                     disConnect(mMac,false);
-                    throw new BleException("BluetoothGattService UUID为"+serviceUUID+",BluetoothGattCharacteristic UUID为"+charaterUUID+"没有notify权限");
+                    LogBlueUtils.w("BluetoothGattService UUID为"+serviceUUID+",BluetoothGattCharacteristic UUID为"+charaterUUID+"没有notify权限");
                 }
             }
         }else{
@@ -434,7 +435,7 @@ public class MyBtManager extends BaseBtManager {
         }else{
             if(descriptor==null){
                 disConnect(mMac,false);
-                throw new BleException("BluetoothGattDescriptor UUID为"+DES_UUID1+"的特征值不存在");
+                LogBlueUtils.w("BluetoothGattDescriptor UUID为"+DES_UUID1+"的特征值不存在");
             }
         }
     }

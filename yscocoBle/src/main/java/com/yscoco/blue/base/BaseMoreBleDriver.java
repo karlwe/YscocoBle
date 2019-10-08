@@ -136,14 +136,14 @@ public abstract class BaseMoreBleDriver implements MoreBleDriver,HandleDriver {
     public boolean writeData(String mac, byte[] cmd) {
         if(mac==null){
             for(MyBtManager btManager:mBtManagerMaps.values()){
-               return btManager.writeData(cmd);
+                btManager.writeData(cmd);
             }
         }else {
             if (mBtManagerMaps.get(mac) != null) {
                 return mBtManagerMaps.get(mac).writeData(cmd);
             }
         }
-        return false;
+        return true;
     }
 
     @Override
