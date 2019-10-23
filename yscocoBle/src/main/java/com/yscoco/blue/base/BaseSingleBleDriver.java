@@ -121,6 +121,22 @@ public abstract class BaseSingleBleDriver implements SingleBleDriver,HandleDrive
         return true;
     }
 
+
+    @Override
+    public boolean writeData(byte[] cmd,int type) {
+        if (mBtManager != null) {
+            return mBtManager.writeData(cmd);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean writeData(byte[] cmd, String serviceUUID, String charUUID,int type) {
+        if (mBtManager != null) {
+            return mBtManager.writeData(cmd, serviceUUID, charUUID);
+        }
+        return true;
+    }
     @Override
     public void readData() {
         if (mBtManager != null) {

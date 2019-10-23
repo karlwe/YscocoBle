@@ -160,6 +160,34 @@ public abstract class BaseMoreBleDriver implements MoreBleDriver,HandleDriver {
         return true;
     }
 
+
+    @Override
+    public boolean writeData(String mac, byte[] cmd,int type) {
+        if(mac==null){
+            for(MyBtManager btManager:mBtManagerMaps.values()){
+                btManager.writeData(cmd,type);
+            }
+        }else {
+            if (mBtManagerMaps.get(mac) != null) {
+                return mBtManagerMaps.get(mac).writeData(cmd,type);
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public boolean writeData(String mac, byte[] cmd, String serviceUUID, String charUUID,int type) {
+        if(mac==null){
+            for(MyBtManager btManager:mBtManagerMaps.values()){
+                btManager.writeData(cmd,type);
+            }
+        }else {
+            if (mBtManagerMaps.get(mac) != null) {
+                return mBtManagerMaps.get(mac).writeData(cmd, serviceUUID, charUUID,type);
+            }
+        }
+        return true;
+    }
     @Override
     public void readData(String mac) {
         if (mBtManagerMaps.get(mac) != null) {

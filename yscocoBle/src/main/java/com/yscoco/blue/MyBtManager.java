@@ -331,7 +331,7 @@ public class MyBtManager extends BaseBtManager {
      * @param bb           发送的字节数组的值
      */
     @SuppressWarnings("unused")
-    public synchronized boolean writeLlsAlertLevel(String service_uuid, String cha_uuid, byte[] bb) {
+    public synchronized boolean writeLlsAlertLevel(String service_uuid, String cha_uuid, byte[] bb,int type) {
         StringBuffer b = new StringBuffer();
         for (int i = 0; i < bb.length; i++) {
             b.append(String.format("%02X ", bb[i]).toString().trim());
@@ -347,7 +347,7 @@ public class MyBtManager extends BaseBtManager {
         boolean status = false;
         int storedLevel = alertLevel.getWriteType();
         alertLevel.setValue(bb);
-        alertLevel.setWriteType(BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE);
+        alertLevel.setWriteType(type);
         status = mBluetoothGatt.writeCharacteristic(alertLevel);
         LogBlueUtils.d("数据写入状态" + status);
         FileWriteUtils.initWrite("数据写入状态" + status);
@@ -449,10 +449,17 @@ public class MyBtManager extends BaseBtManager {
     }
 
     public boolean writeData(byte[] cmd){
-        return writeLlsAlertLevel(BleManage.getInstance().getBleConfig().SERVICE_UUID1,BleManage.getInstance().getBleConfig().CHA_WRITE,cmd);
+        return writeLlsAlertLevel(BleManage.getInstance().getBleConfig().SERVICE_UUID1,BleManage.getInstance().getBleConfig().CHA_WRITE,cmd,BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE);
     }
     public boolean writeData( byte[] cmd,String serviceUUID,String charUUID){
-        return writeLlsAlertLevel(serviceUUID,charUUID,cmd);
+        return writeLlsAlertLevel(serviceUUID,charUUID,cmd,BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE);
+    }
+
+    public boolean writeData(byte[] cmd,int type){
+        return writeLlsAlertLevel(BleManage.getInstance().getBleConfig().SERVICE_UUID1,BleManage.getInstance().getBleConfig().CHA_WRITE,cmd,type);
+    }
+    public boolean writeData( byte[] cmd,String serviceUUID,String charUUID,int type){
+        return writeLlsAlertLevel(serviceUUID,charUUID,cmd,type);
     }
     /**
      * 读取数据

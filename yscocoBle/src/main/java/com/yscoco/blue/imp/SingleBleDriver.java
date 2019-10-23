@@ -63,6 +63,18 @@ public interface SingleBleDriver {
     */
     boolean writeData(byte[] cmd, String serviceUUID, String charUUID);
 
+
+    /**
+     * 发送数据
+     * @param writeType  BluetoothGattCharacteristic.WRITE_...
+     */
+    boolean writeData(byte[] cmd,int writeType);
+    /**
+     * 发送特定服务和属性的数据
+     * @param writeType  BluetoothGattCharacteristic.WRITE_...
+     */
+    boolean writeData(byte[] cmd, String serviceUUID, String charUUID,int writeType);
+
     /**
      * 读取数据
      */
