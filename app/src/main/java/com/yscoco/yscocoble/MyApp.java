@@ -6,8 +6,11 @@ import android.util.DisplayMetrics;
 import com.yscoco.blue.BleConfig;
 import com.yscoco.blue.BleManage;
 import com.yscoco.blue.app.BaseBlueApplication;
+import com.yscoco.blue.base.BaseMoreBleDriver;
 import com.yscoco.blue.bean.NotifyUUIDBean;
+import com.yscoco.blue.imp.MoreBleDriver;
 import com.yscoco.blue.imp.SingleBleDriver;
+import com.yscoco.blue.utils.FileWriteUtils;
 import com.yscoco.blue.utils.LogBlueUtils;
 
 import java.lang.reflect.Field;
@@ -42,8 +45,6 @@ public class MyApp extends BaseBlueApplication {
     public void onCreate() {
         super.onCreate();
         instance = this;
-        /*关闭日志*/
-        closeLog();
         initBle();
         setSize();
     }
@@ -67,18 +68,18 @@ public class MyApp extends BaseBlueApplication {
         config.CHA_WRITE =     BleConstans.CHA_WRITE;
         List<NotifyUUIDBean> beansList = new ArrayList<NotifyUUIDBean>();
         beansList.add(new NotifyUUIDBean(BleConstans.SERVICE_UUID1,BleConstans.CHA_NOTIFY));
+        beansList.add(new NotifyUUIDBean(BleConstans.SERVICE_BATTERY_UUID,BleConstans.CHA_BATTERY_NOTIFY));
         config.setNotifyList(beansList);
+        config.setPROJECT_NAME("yscoco");//本地log日志名称
+        config.setCloseFile(false);//是否开启写入本地log日志
+        config.setBleLog(true,"BLE:");//控制台显示打印
         BleManage.getInstance().init(this,config);
     }
 
-    public static SingleBleDriver getBleDriver() {
-        return BleManage.getInstance().getMySingleDriver();
+    public static MoreBleDriver getBleDriver() {
+        return BleManage.getInstance().getMyMoreDriver();
     }
 
-    /*关闭log*/
-    private void closeLog() {
-        LogBlueUtils.setLog(true,"BLE:");/*设置BLe状态*/
-    }
 
     //获取应用的data/data/....File目录
     public String getFilesDirPath() {
@@ -107,5 +108,4 @@ public class MyApp extends BaseBlueApplication {
     public void setDisplayMetrics(DisplayMetrics DisplayMetrics) {
         this.displayMetrics = DisplayMetrics;
     }
-
 }
