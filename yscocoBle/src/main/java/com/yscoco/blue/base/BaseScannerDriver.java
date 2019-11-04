@@ -166,7 +166,7 @@ public abstract class BaseScannerDriver implements ScannerDriver {
             if(device.getName()==null){
                 return;
             }
-            LogBlueUtils.i("ScanCallback:onLeScan:"+device.getName()+device.getAddress()+":"+ BleUtils.toHexString(scanRecord));
+            LogBlueUtils.d("ScanCallback:onLeScan:"+device.getName()+device.getAddress()+":"+ BleUtils.toHexString(scanRecord));
             onScan(device, scanRecord,rssi);
         }
     };
@@ -182,7 +182,7 @@ public abstract class BaseScannerDriver implements ScannerDriver {
             if(device.getName()==null){
                 return;
             }
-            LogBlueUtils.i("ScanCallback:onScanResult"+device.getName()+device.getAddress());
+            LogBlueUtils.d("ScanCallback:onScanResult"+device.getName()+device.getAddress());
             onScan(device, scanRecord,rssi);
         }
 
@@ -190,7 +190,6 @@ public abstract class BaseScannerDriver implements ScannerDriver {
         public void onScanFailed(int errorCode){
             super.onScanFailed(errorCode);
             FileWriteUtils.initWrite("ScanCallback：蓝牙扫描callback50 onScanFailed");
-            LogBlueUtils.d("ScanCallback:onScanFailed,errorCode:"+errorCode);
             LogBlueUtils.w("ScanCallback:onScanFailed,errorCode:"+errorCode);
         }
 

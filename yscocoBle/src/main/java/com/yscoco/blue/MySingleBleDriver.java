@@ -13,6 +13,7 @@ import com.yscoco.blue.enums.DeviceState;
 import com.yscoco.blue.listener.BleDataListener;
 import com.yscoco.blue.listener.BleStateListener;
 import com.yscoco.blue.utils.BleDataUtils;
+import com.yscoco.blue.utils.LogBlueUtils;
 
 import java.util.HashSet;
 
@@ -90,7 +91,7 @@ public class MySingleBleDriver extends BaseSingleBleDriver {
                 break;
             /*设备断开连接*/
             case MyBtManager.DISCONNECT:
-                Log.e("blue","移除设备"+address);
+                LogBlueUtils.e("移除设备"+address);
                 if(mBtManager!=null&&mBtManager.getmMac().equals(address)){
                     mBtManager = null;
                 }

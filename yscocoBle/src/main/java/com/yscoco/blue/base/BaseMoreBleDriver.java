@@ -13,6 +13,7 @@ import android.util.Log;
 import com.yscoco.blue.MyBtManager;
 import com.yscoco.blue.enums.DeviceState;
 import com.yscoco.blue.imp.MoreBleDriver;
+import com.yscoco.blue.utils.LogBlueUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,14 +42,14 @@ public abstract class BaseMoreBleDriver implements MoreBleDriver,HandleDriver {
     }
     @Override
     public boolean connect(String mac, BluetoothDevice mDevice, boolean isReconnect) {
-        Log.e("blue","连接中：" + mac+mBtManagerMaps.size());
+        LogBlueUtils.e("连接中：" + mac+mBtManagerMaps.size());
         //管理单个连接
         MyBtManager btManager = mBtManagerMaps.get(mac);
         if (btManager == null) {
             btManager = new MyBtManager(mContext, mac,mDevice, this);
             mBtManagerMaps.put(mac, btManager);
         }else{
-            Log.e("blue","有数据");
+            LogBlueUtils.e("有设备处于连接状态数据");
         }
         btManager.setReconnect(isReconnect);
         return btManager.connected();
@@ -78,7 +79,7 @@ public abstract class BaseMoreBleDriver implements MoreBleDriver,HandleDriver {
 
     @Override
     public void disConnectAll(final String mac) {
-        Log.e("blue","断开全部的方法是"+mBtManagerMaps.size());
+        LogBlueUtils.e("断开全部的方法是"+mBtManagerMaps.size());
         for (String key : mBtManagerMaps.keySet()) {
             Log.e("blue","bluedisConnectAll");
             if(mac!= null&&key.equals(mac)){
