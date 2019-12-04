@@ -22,6 +22,7 @@ import com.yscoco.blue.enums.ScanNameType;
 import com.yscoco.blue.exception.BleException;
 import com.yscoco.blue.imp.ScannerDriver;
 import com.yscoco.blue.utils.BleScanUtils;
+import com.yscoco.blue.utils.BleStatusUtil;
 import com.yscoco.blue.utils.BleUtils;
 import com.yscoco.blue.utils.FileWriteUtils;
 import com.yscoco.blue.utils.LogBlueUtils;
@@ -202,6 +203,8 @@ public abstract class BaseScannerDriver implements ScannerDriver {
             super.onScanFailed(errorCode);
             FileWriteUtils.initWrite("ScanCallback：蓝牙扫描callback50 onScanFailed");
             LogBlueUtils.w("ScanCallback:onScanFailed,errorCode:"+errorCode);
+            BleStatusUtil.releaseAllScanClient();
+            isScan = false;
         }
 
         @Override

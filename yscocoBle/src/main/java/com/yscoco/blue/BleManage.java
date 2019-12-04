@@ -10,6 +10,7 @@ import android.os.Build;
 import com.yscoco.blue.imp.MoreBleDriver;
 import com.yscoco.blue.imp.ScannerDriver;
 import com.yscoco.blue.imp.SingleBleDriver;
+import com.yscoco.blue.utils.BleStatusUtil;
 import com.yscoco.blue.utils.FileWriteUtils;
 
 /**
@@ -48,6 +49,7 @@ public class BleManage {
         }
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         FileWriteUtils.deleteFile();
+        BleStatusUtil.closeAndroidPDialog();
     }
 
     public MoreBleDriver getMyMoreDriver() {
