@@ -1,6 +1,7 @@
 package com.yscoco.blue;
 
 import com.yscoco.blue.bean.NotifyUUIDBean;
+import com.yscoco.blue.utils.BleScanUtils;
 import com.yscoco.blue.utils.LogBlueUtils;
 
 import java.util.ArrayList;
@@ -95,5 +96,11 @@ public class BleConfig {
     }
     public void setBleLog(boolean isLog,String LogStart){
         LogBlueUtils.setLog(isLog,LogStart);/*设置BLe状态*/
+    }
+    /**
+     * 扫描的设备信息是否需要显示Log
+     */
+    public void setScanBleLog(boolean isLog){
+        BleScanUtils.isLog(isLog);
     }
 }

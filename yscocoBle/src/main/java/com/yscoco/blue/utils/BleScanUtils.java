@@ -8,4 +8,9 @@ package com.yscoco.blue.utils;
  * 类介绍：
  */
 public class BleScanUtils {
+    public static boolean isLog = false;
+    public static void isLog(boolean isLog){
+        BleScanUtils.isLog = isLog;
+    }
+
 }

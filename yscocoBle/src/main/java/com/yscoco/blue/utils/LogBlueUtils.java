@@ -33,7 +33,7 @@ public class LogBlueUtils {
         if (!allowD) return;
         StackTraceElement caller = getCallerStackTraceElement();
         String tag = generateTag(caller);
-        Log.e(tag, allowIndex+content);
+        Log.d(tag, allowIndex+content);
     }
     public static void e(String content) {
         if (!allowE) return;
