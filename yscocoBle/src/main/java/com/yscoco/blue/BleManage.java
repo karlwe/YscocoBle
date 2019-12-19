@@ -72,7 +72,10 @@ public class BleManage {
     }
 
     public boolean isEnableBluetooth() {
-        return bluetoothAdapter.isEnabled();
+        if(bluetoothAdapter!=null){
+            return bluetoothAdapter.isEnabled();
+        }
+        return false;
     }
     /**
      * Open bluetooth
