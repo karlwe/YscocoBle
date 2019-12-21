@@ -28,9 +28,13 @@ public class BleConfig {
      */
     public String CHA_WRITE = "0000FFF4-0000-1000-8000-00805F9B34FB";
     /**
+     * 日志文件本地路径
+     */
+    public String filePaths = "yscoco";
+    /**
      * 本地日志文件名称
      */
-    public String PROJECT_NAME = "yscoco";
+    public String fileIndexName = "yscoco";
     /**
      * 是否关闭本地文件日志
      */
@@ -92,11 +96,11 @@ public class BleConfig {
     }
 
     public String getPROJECT_NAME() {
-        return PROJECT_NAME;
+        return fileIndexName;
     }
 
     public void setPROJECT_NAME(String PROJECT_NAME) {
-        this.PROJECT_NAME = PROJECT_NAME;
+        this.fileIndexName = PROJECT_NAME;
     }
 
     public boolean isCloseFile() {
@@ -110,11 +114,22 @@ public class BleConfig {
     /**
      * 设置是否存储BLE 通讯过程数据
      * @param isCloseFile 是否关闭本地日志存储，true 关闭 false 打开
+     * @param filePaths 本地日志保存路径
+     * @param fileName 文件名称 ，存储文件统一存储在yscoco文件下，格式 file_YYYY-MM-DD.txt
+     */
+    public void setFileInfo(boolean isCloseFile,String filePaths,String fileName){
+        this.filePaths = filePaths;
+        this.isCloseFile = isCloseFile;
+        this.fileIndexName  = fileName;
+    }
+    /**
+     * 设置是否存储BLE 通讯过程数据
+     * @param isCloseFile 是否关闭本地日志存储，true 关闭 false 打开
      * @param fileName 文件名称 ，存储文件统一存储在yscoco文件下，格式 file_YYYY-MM-DD.txt
      */
     public void setFileInfo(boolean isCloseFile,String fileName){
-        setCloseFile(isCloseFile);
-        setPROJECT_NAME(fileName);
+        this.isCloseFile = isCloseFile;
+        this.fileIndexName  = fileName;
     }
     /**
      * 设置是否打印日志
