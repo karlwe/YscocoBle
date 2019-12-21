@@ -39,22 +39,30 @@ public interface MoreBleDriver {
     /**
      * 断开连接的设备
      * @param mac
-     * @param isReconnect  是否重连
+     * @param isReconnect  是否重连，不重连则会移除该设备的重连信息
      */
     void disConnect(String mac, boolean isReconnect);
+    /**
+     * 获取当前连接的设备
+     */
     ArrayList<BluetoothDevice> getConnectDevice();
     /**
      * 断开所有连接的设备
+     * @param mac 忽略掉的设备，为空代表不忽略
      */
     void disConnectAll(String mac);
 
     /**
-     * 设置设备是否重连
+     * 设置设备是否重连，主动断开连接或者移除设备前需要设置
      * @param mac
      * @param isReconnect 是否重连
      */
     void setReconnect(String mac, boolean isReconnect);
 
+    /**
+     * 设备是否在重连列表，扫描到设备后判断是否发起重连
+     * @param mac
+     */
     boolean isReconnect(String mac);
 
     void addBleStateListener(BleStateListener listener);
@@ -80,7 +88,7 @@ public interface MoreBleDriver {
 
     /**
      * 发送数据
-     * @param writeType
+     * @param writeType 数据写入类型
      */
     boolean writeData(String mac, byte[] cmd,int writeType);
     /**
