@@ -16,19 +16,25 @@ import java.util.List;
  */
 public class BleConfig {
     /**
-     * service UUID
+     * 默认 service UUID
      */
     public String SERVICE_UUID1 = "0000FFF0-0000-1000-8000-00805F9B34FB";
     /**
-     * 通知 UUID
+     * 默认 notify UUID
      */
     public String CHA_NOTIFY = "0000FFF4-0000-1000-8000-00805F9B34FB";
     /**
-     *写数据 UUID
+     *默认 Write  UUID
      */
     public String CHA_WRITE = "0000FFF4-0000-1000-8000-00805F9B34FB";
+    /**
+     * 本地日志文件名称
+     */
     public String PROJECT_NAME = "yscoco";
-    public boolean isCloseFile = false;/*是否关闭本地文件日志*/
+    /**
+     * 是否关闭本地文件日志
+     */
+    public boolean isCloseFile = false;
     public List<NotifyUUIDBean> notifyList = new ArrayList<NotifyUUIDBean>();
     /**
      *多Notify硬件配置构造方法，需要额外配置主通知和回调接口
