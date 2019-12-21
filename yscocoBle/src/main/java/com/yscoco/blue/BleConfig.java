@@ -39,7 +39,10 @@ public class BleConfig {
         notifyList.add(new NotifyUUIDBean(SERVICE_UUID1,CHA_NOTIFY));
     }
     /**
-     *单Notify硬件配置构造方法
+     * 当Notify只有一个UUID时可以使用此构造方法
+     * @param SERVICE_UUID1 服务UUID
+     * @param    CHA_NOTIFY Notify的UUID
+     * @param    CHA_WRITE  默认写入数据的UUID
      */
     public BleConfig(String SERVICE_UUID1, String CHA_NOTIFY, String CHA_WRITE) {
         this.SERVICE_UUID1 = SERVICE_UUID1;
@@ -75,6 +78,9 @@ public class BleConfig {
         return notifyList;
     }
 
+    /**
+     * 设备连接成功后需要同时开启的Notify 配置
+     */
     public void setNotifyList(List<NotifyUUIDBean> notifyList) {
         this.notifyList = notifyList;
     }
@@ -91,14 +97,30 @@ public class BleConfig {
         return isCloseFile;
     }
 
+
     public void setCloseFile(boolean closeFile) {
         isCloseFile = closeFile;
     }
+    /**
+     * 设置是否存储BLE 通讯过程数据
+     * @param isCloseFile 是否关闭本地日志存储，true 关闭 false 打开
+     * @param fileName 文件名称 ，存储文件统一存储在yscoco文件下，格式 file_YYYY-MM-DD.txt
+     */
+    public void setFileInfo(boolean isCloseFile,String fileName){
+        setCloseFile(isCloseFile);
+        setPROJECT_NAME(fileName);
+    }
+    /**
+     * 设置是否打印日志
+     * @param isLog 是否显示日志，true 显示 false 不显示
+     * @param LogStart 日志开头的标识
+     */
     public void setBleLog(boolean isLog,String LogStart){
         LogBlueUtils.setLog(isLog,LogStart);/*设置BLe状态*/
     }
     /**
-     * 扫描的设备信息是否需要显示Log
+     * 扫描的设备信息是否需要显示Log（多连接时日志过多导致数据不好筛选所做）
+     * @param isLog true为显示扫描到的设备信息，false 不显示扫描获取到的设备信息
      */
     public void setScanBleLog(boolean isLog){
         BleScanUtils.isLog(isLog);
