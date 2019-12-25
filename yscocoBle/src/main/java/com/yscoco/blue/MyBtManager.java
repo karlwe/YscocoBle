@@ -129,6 +129,7 @@ public class MyBtManager extends BaseBtManager {
             mBluetoothGatt = device.connectGatt(mContext, false, mGattCallback);
 //            mBluetoothGatt.connect();
            LogBlueUtils.d( mMac+"device.getBondState==" + device.getBondState());
+            FileWriteUtils.initWrite(mMac+"device.getBondState==" + device.getBondState());
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -234,9 +235,11 @@ public class MyBtManager extends BaseBtManager {
                 List<BluetoothGattService> services =  gatt.getServices();
                 for(BluetoothGattService service:services){
                    LogBlueUtils.d("serviceUUID:"+service.getUuid().toString());
+                    FileWriteUtils.initWrite("serviceUUID:"+service.getUuid().toString());
                     if(service.getCharacteristics()!=null){
                         for(BluetoothGattCharacteristic cha:service.getCharacteristics()){
                            LogBlueUtils.d("characteristicUUID:"+cha.getUuid().toString());
+                            FileWriteUtils.initWrite("characteristicUUID:"+cha.getUuid().toString());
                         }
                     }
                 }
@@ -281,10 +284,12 @@ public class MyBtManager extends BaseBtManager {
                     b.append(String.format("%02X ", data[i]).toString().trim());
                 }
                LogBlueUtils.d("onCharacteristicRead："+mMac+"数据为" + b.toString());
+                FileWriteUtils.initWrite("onCharacteristicRead："+mMac+"数据为" + b.toString());
                 mBlueDriver.dataHandler(uuid,mMac,data,READ_VALUE);
             }else{
                 disConnect(mMac,true);
                LogBlueUtils.d("onCharacteristicRead:失败,characteristic.getService()UUID:"+characteristic.getService().getUuid().toString()+",BluetoothGattCharacteristic UUID:"+characteristic.getUuid().toString());
+                FileWriteUtils.initWrite("onCharacteristicRead:失败,characteristic.getService()UUID:"+characteristic.getService().getUuid().toString()+",BluetoothGattCharacteristic UUID:"+characteristic.getUuid().toString());
             }
         }
 
@@ -292,6 +297,7 @@ public class MyBtManager extends BaseBtManager {
         public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
             super.onCharacteristicWrite(gatt, characteristic, status);
            LogBlueUtils.d("onCharacteristicWrite" + status);
+            FileWriteUtils.initWrite("onCharacteristicWrite" + status);
         }
 
         @Override
@@ -300,9 +306,11 @@ public class MyBtManager extends BaseBtManager {
             if (status != BluetoothGatt.GATT_SUCCESS) {
                 disConnect(mMac,true);
                 LogBlueUtils.w("开启 BluetoothGattCharacteristic UUID为"+descriptor.getCharacteristic().getUuid().toString().toUpperCase()+"notify异常");
+                FileWriteUtils.initWrite("开启 BluetoothGattCharacteristic UUID为"+descriptor.getCharacteristic().getUuid().toString().toUpperCase()+"notify异常");
                 return;
             }
            LogBlueUtils.d("开启notify成功"+descriptor.getCharacteristic().getUuid().toString().toUpperCase());
+            FileWriteUtils.initWrite("开启notify成功"+descriptor.getCharacteristic().getUuid().toString().toUpperCase());
             for(int i=0;i<BleManage.getInstance().getBleConfig().getNotifyList().size();i++){
                 if(descriptor.getCharacteristic().getUuid().toString().toUpperCase()
                         .equals(BleManage.getInstance().getBleConfig().getNotifyList().get(i).getCharUUID().toUpperCase())) {
@@ -310,6 +318,7 @@ public class MyBtManager extends BaseBtManager {
                         /*数据通道开启成功*/
                         mBlueDriver.sendMessage(mMac,NOTIFY_ON);
                        LogBlueUtils.d("Notify全部开启，可以开始同步数据");
+                        FileWriteUtils.initWrite("Notify全部开启，可以开始同步数据");
                     }else{
                         startNotification(BleManage.getInstance().getBleConfig().getNotifyList().get(i+1).getServiceUUID(),
                                 BleManage.getInstance().getBleConfig().getNotifyList().get(i+1).getCharUUID());
@@ -369,11 +378,14 @@ public class MyBtManager extends BaseBtManager {
             if(c1==null){
                 disConnect(mMac,false);
                 LogBlueUtils.w("BluetoothGattCharacteristic UUID为"+characterUUID+"的通道不存在");
+                FileWriteUtils.initWrite("BluetoothGattCharacteristic UUID为"+characterUUID+"的通道不存在");
+
             }
             return c1;
         }else{
             disConnect(mMac,false);
             LogBlueUtils.w("BluetoothGattService UUID为"+serviceUUID+"的服务不存在");
+            FileWriteUtils.initWrite("BluetoothGattService UUID为"+serviceUUID+"的服务不存在");
             return null;
         }
     }
