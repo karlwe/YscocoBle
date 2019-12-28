@@ -103,6 +103,9 @@ public abstract class BaseScannerDriver implements ScannerDriver {
         }
         isScan = false;
         scanState();
+        if(bleManage!=null&&(!bleManage.isEnableBluetooth())){
+            return ;
+        }
         if (Build.VERSION.SDK_INT < 21) {
             if(bleManage!=null&&bleManage.getBluetoothAdapter()!=null&&callBack43!=null){
                 bleManage.getBluetoothAdapter().stopLeScan(callBack43);
@@ -149,6 +152,11 @@ public abstract class BaseScannerDriver implements ScannerDriver {
         msg.what = 2;
         mHandler.sendMessage(msg);
     };
+    private void scanError(){
+        Message msg = new Message();
+        msg.what = 3;
+        mHandler.sendMessage(msg);
+    };
     public abstract void handlerMsg(BlueDevice device);
     public abstract void handlerMsg(BleScannerState state);
     public Handler mHandler = new Handler(Looper.getMainLooper()) {
@@ -164,6 +172,9 @@ public abstract class BaseScannerDriver implements ScannerDriver {
                     }else{
                         handlerMsg(BleScannerState.CLOSE_SCANNER);
                     }
+                    break;
+                case 3:
+                    handlerMsg(BleScannerState.SCAN_ERROR);
                     break;
             }
         }
@@ -205,6 +216,7 @@ public abstract class BaseScannerDriver implements ScannerDriver {
             LogBlueUtils.w("ScanCallback:onScanFailed,errorCode:"+errorCode);
             BleStatusUtil.releaseAllScanClient();
             isScan = false;
+            scanError();
         }
 
         @Override

@@ -11,5 +11,6 @@ public enum BleScannerState {
     OPEN_SCANNER,/*正在扫描*/
     CLOSE_SCANNER,/*关闭扫描状态*/
     OPEN_ENABLED,/*蓝牙开启*/
-    CLOSE_ENABLED/*蓝牙关闭状态*/
+    CLOSE_ENABLED,/*蓝牙关闭状态*/
+    SCAN_ERROR  /*开启扫描失败*/
 }

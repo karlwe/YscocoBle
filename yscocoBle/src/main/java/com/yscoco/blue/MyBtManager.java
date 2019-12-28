@@ -408,6 +408,8 @@ public class MyBtManager extends BaseBtManager {
                 }else{
                     disConnect(mMac,false);
                     LogBlueUtils.w("BluetoothGattService UUID为"+serviceUUID+",BluetoothGattCharacteristic UUID为"+charaterUUID+"没有notify权限");
+                    FileWriteUtils.initWrite("BluetoothGattService UUID为"+serviceUUID+",BluetoothGattCharacteristic UUID为"+charaterUUID+"没有notify权限");
+
                 }
             }
         }else{
@@ -421,6 +423,7 @@ public class MyBtManager extends BaseBtManager {
     public synchronized void readCharacteristic(String service_uuid, String cha_uuid) {
         if (mBluetoothAdapter == null || mBluetoothGatt == null) {
            LogBlueUtils.w("读取数据的通道不存在");
+            FileWriteUtils.initWrite("读取数据的通道不存在");
             return;
         }
         BluetoothGattCharacteristic c1 = getCharacter(service_uuid, cha_uuid);
@@ -435,6 +438,7 @@ public class MyBtManager extends BaseBtManager {
     public void setCharacteristicNotification(BluetoothGattCharacteristic characteristic, boolean enabled) {
         if (mBluetoothAdapter == null || mBluetoothGatt == null) {
            LogBlueUtils.d("BluetoothAdapter not initialized");
+            FileWriteUtils.initWrite("BluetoothAdapter not initialized");
             return;
         }
         mBluetoothGatt.setCharacteristicNotification(characteristic, true);
@@ -449,6 +453,7 @@ public class MyBtManager extends BaseBtManager {
             if(descriptor==null){
                 disConnect(mMac,false);
                 LogBlueUtils.w("BluetoothGattDescriptor UUID为"+DES_UUID1+"的特征值不存在");
+                FileWriteUtils.initWrite("BluetoothGattDescriptor UUID为"+DES_UUID1+"的特征值不存在");
             }
         }
     }
