@@ -39,6 +39,10 @@ public class BleConfig {
      * 是否关闭本地文件日志
      */
     public boolean isCloseFile = false;
+    /**
+     * 是否通过主UUID过滤设备
+     */
+    private boolean is_UUID_Filter = false;
     public List<NotifyUUIDBean> notifyList = new ArrayList<NotifyUUIDBean>();
     /**
      *多Notify硬件配置构造方法，需要额外配置主通知和回调接口
@@ -145,5 +149,15 @@ public class BleConfig {
      */
     public void setScanBleLog(boolean isLog){
         BleScanUtils.isLog(isLog);
+    }
+
+    public boolean isIs_UUID_Filter() {
+        return is_UUID_Filter;
+    }
+    /**
+     *是否通过主UUID过滤设备,默认为false
+     */
+    public void setIs_UUID_Filter(boolean is_UUID_Filter) {
+        this.is_UUID_Filter = is_UUID_Filter;
     }
 }

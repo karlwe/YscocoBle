@@ -15,6 +15,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.os.ParcelUuid;
 
+import com.yscoco.blue.BleConfig;
 import com.yscoco.blue.BleManage;
 import com.yscoco.blue.bean.BlueDevice;
 import com.yscoco.blue.bean.NotifyUUIDBean;
@@ -82,14 +83,16 @@ public abstract class BaseScannerDriver implements ScannerDriver {
             FileWriteUtils.initWrite("ScanCallback：蓝牙扫描监听回调callBack43");
         }else{
                 //指定需要识别到的蓝牙设备
-//                List<ScanFilter> scanFilterList = new ArrayList<>();
-//                ScanFilter.Builder builder = new ScanFilter.Builder();
-//                for(NotifyUUIDBean uuidBean:BleManage.getInstance().getBleConfig().notifyList) {
-//                    builder.setServiceUuid(ParcelUuid.fromString(uuidBean.getServiceUUID()));
-//                }
-//                ScanFilter scanFilter = builder.build();
-//                scanFilterList.add(scanFilter);
-            bleManage.getBluetoothAdapter().getBluetoothLeScanner().startScan(null,scanSettings,callBack50);
+                List<ScanFilter> scanFilterList = new ArrayList<>();
+                ScanFilter.Builder builder = new ScanFilter.Builder();
+                    builder.setServiceUuid(ParcelUuid.fromString(BleManage.getInstance().getBleConfig().getSERVICE_UUID1()));
+                ScanFilter scanFilter = builder.build();
+                scanFilterList.add(scanFilter);
+                if(BleManage.getInstance().getBleConfig().isIs_UUID_Filter()){
+                    bleManage.getBluetoothAdapter().getBluetoothLeScanner().startScan(scanFilterList,scanSettings,callBack50);
+                }else{
+                    bleManage.getBluetoothAdapter().getBluetoothLeScanner().startScan(null,scanSettings,callBack50);
+                }
             FileWriteUtils.initWrite("ScanCallback：蓝牙扫描监听回调callBack50");
         }
     }
