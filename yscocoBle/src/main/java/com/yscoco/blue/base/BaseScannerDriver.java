@@ -1,5 +1,6 @@
 package com.yscoco.blue.base;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -47,13 +48,12 @@ public abstract class BaseScannerDriver implements ScannerDriver {
     private String scanName;/**/
     private ScanNameType scanType = ScanNameType.ALL;
     ScanSettings scanSettings = null;
+    ScanCallback callBack50;
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public BaseScannerDriver(BleManage bleManage) {
         this.bleManage = bleManage;
-        if (scanSettings == null) {
-            ScanSettings.Builder builder = new ScanSettings.Builder();
-            builder.setScanMode(SCAN_MODE_LOW_LATENCY);
-            scanSettings = builder.build();
+        if (Build.VERSION.SDK_INT >= 21) {
+            initLoliScan();
         }
     }
     @Override
@@ -192,38 +192,44 @@ public abstract class BaseScannerDriver implements ScannerDriver {
             onScan(device, scanRecord,rssi);
         }
     };
-
-    ScanCallback callBack50 = new ScanCallback(){
-        @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-        @Override
-        public void onScanResult(int callbackType, ScanResult result) {
-            super.onScanResult(callbackType, result);
-            BluetoothDevice device = result.getDevice();
-            byte[] scanRecord = result.getScanRecord().getBytes();
-            int rssi = result.getRssi();
-            if(device.getName()==null){
-                return;
+    @SuppressLint("NewApi")
+    private void initLoliScan(){
+        if (scanSettings == null) {
+            ScanSettings.Builder builder = new ScanSettings.Builder();
+            builder.setScanMode(SCAN_MODE_LOW_LATENCY);
+            scanSettings = builder.build();
+        }
+        callBack50 = new ScanCallback(){
+            public void onScanResult(int callbackType, ScanResult result) {
+                super.onScanResult(callbackType, result);
+                BluetoothDevice device = result.getDevice();
+                byte[] scanRecord = result.getScanRecord().getBytes();
+                int rssi = result.getRssi();
+                if(device.getName()==null){
+                    return;
+                }
+                if(BleScanUtils.isLog)
+                    LogBlueUtils.d("ScanCallback:onScanResult"+device.getName()+device.getAddress());
+                onScan(device, scanRecord,rssi);
             }
-            if(BleScanUtils.isLog)
-            LogBlueUtils.d("ScanCallback:onScanResult"+device.getName()+device.getAddress());
-            onScan(device, scanRecord,rssi);
-        }
 
-        @Override
-        public void onScanFailed(int errorCode){
-            super.onScanFailed(errorCode);
-            FileWriteUtils.initWrite("ScanCallback：蓝牙扫描callback50 onScanFailed");
-            LogBlueUtils.w("ScanCallback:onScanFailed,errorCode:"+errorCode);
-            BleStatusUtil.releaseAllScanClient();
-            isScan = false;
-            scanError();
-        }
+            @Override
+            public void onScanFailed(int errorCode){
+                super.onScanFailed(errorCode);
+                FileWriteUtils.initWrite("ScanCallback：蓝牙扫描callback50 onScanFailed");
+                LogBlueUtils.w("ScanCallback:onScanFailed,errorCode:"+errorCode);
+                BleStatusUtil.releaseAllScanClient();
+                isScan = false;
+                scanError();
+            }
 
-        @Override
-        public void onBatchScanResults(List<ScanResult> results) {
-            super.onBatchScanResults(results);
-            FileWriteUtils.initWrite("ScanCallback：蓝牙扫描callback50 onBatchScanResults");
-            LogBlueUtils.d("ScanCallback:onBatchScanResults");
-        }
-    };
+            @Override
+            public void onBatchScanResults(List<ScanResult> results) {
+                super.onBatchScanResults(results);
+                FileWriteUtils.initWrite("ScanCallback：蓝牙扫描callback50 onBatchScanResults");
+                LogBlueUtils.d("ScanCallback:onBatchScanResults");
+            }
+        };
+    }
+
 }

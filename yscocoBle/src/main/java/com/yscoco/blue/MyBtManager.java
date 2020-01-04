@@ -305,8 +305,8 @@ public class MyBtManager extends BaseBtManager {
             super.onDescriptorWrite(gatt, descriptor, status);
             if (status != BluetoothGatt.GATT_SUCCESS) {
                 disConnect(mMac,true);
-                LogBlueUtils.w("开启 BluetoothGattCharacteristic UUID为"+descriptor.getCharacteristic().getUuid().toString().toUpperCase()+"notify异常");
-                FileWriteUtils.initWrite("开启 BluetoothGattCharacteristic UUID为"+descriptor.getCharacteristic().getUuid().toString().toUpperCase()+"notify异常");
+                LogBlueUtils.w("开启 BluetoothGattCharacteristic UUID为"+descriptor.getCharacteristic().getUuid().toString().toUpperCase()+"notify异常:"+status);
+                FileWriteUtils.initWrite("开启 BluetoothGattCharacteristic UUID为"+descriptor.getCharacteristic().getUuid().toString().toUpperCase()+"notify异常:"+status);
                 return;
             }
            LogBlueUtils.d("开启notify成功"+descriptor.getCharacteristic().getUuid().toString().toUpperCase());
