@@ -82,28 +82,28 @@ public abstract class BaseScannerDriver implements ScannerDriver {
             bleManage.getBluetoothAdapter().startLeScan(callBack43);
             FileWriteUtils.initWrite("ScanCallback：蓝牙扫描监听回调callBack43");
         }else{
+            if(BleManage.getInstance().getBleConfig().isIs_UUID_Filter()){
                 //指定需要识别到的蓝牙设备
                 List<ScanFilter> scanFilterList = new ArrayList<>();
                 ScanFilter.Builder builder = new ScanFilter.Builder();
-                    builder.setServiceUuid(ParcelUuid.fromString(BleManage.getInstance().getBleConfig().getSERVICE_UUID1()));
+                builder.setServiceUuid(ParcelUuid.fromString(BleManage.getInstance().getBleConfig().getSERVICE_UUID1()));
                 ScanFilter scanFilter = builder.build();
                 scanFilterList.add(scanFilter);
-                if(BleManage.getInstance().getBleConfig().isIs_UUID_Filter()){
-                    bleManage.getBluetoothAdapter().getBluetoothLeScanner().startScan(scanFilterList,scanSettings,callBack50);
-                }else{
-                    bleManage.getBluetoothAdapter().getBluetoothLeScanner().startScan(null,scanSettings,callBack50);
-                }
+                bleManage.getBluetoothAdapter().getBluetoothLeScanner().startScan(scanFilterList,scanSettings,callBack50);
+            }else{
+                bleManage.getBluetoothAdapter().getBluetoothLeScanner().startScan(null,scanSettings,callBack50);
+            }
             FileWriteUtils.initWrite("ScanCallback：蓝牙扫描监听回调callBack50");
         }
     }
 
     @Override
     public void stop() {
-        if(!isScan){
-            LogBlueUtils.d("ScanCallback:未开启扫描");
-            FileWriteUtils.initWrite("ScanCallback：蓝牙未开启扫描");
-            return ;
-        }
+//        if(!isScan){
+//            LogBlueUtils.d("ScanCallback:未开启扫描");
+//            FileWriteUtils.initWrite("ScanCallback：蓝牙未开启扫描");
+//            return ;
+//        }
         isScan = false;
         scanState();
         if(bleManage!=null&&(!bleManage.isEnableBluetooth())){
@@ -113,12 +113,17 @@ public abstract class BaseScannerDriver implements ScannerDriver {
             if(bleManage!=null&&bleManage.getBluetoothAdapter()!=null&&callBack43!=null){
                 bleManage.getBluetoothAdapter().stopLeScan(callBack43);
             }
+            LogBlueUtils.e("ScanCallback：蓝牙扫描监听回调停止callBack43");
             FileWriteUtils.initWrite("ScanCallback：蓝牙扫描监听回调停止callBack43");
         }else{
             if(bleManage!=null&&bleManage.getBluetoothAdapter()!=null&&bleManage.getBluetoothAdapter().getBluetoothLeScanner()!=null&&callBack50!=null) {
                 bleManage.getBluetoothAdapter().getBluetoothLeScanner().stopScan(callBack50);
+                LogBlueUtils.e("ScanCallback：蓝牙扫描监听回调停止callBack50");
+                FileWriteUtils.initWrite("ScanCallback：蓝牙扫描监听回调停止callBack50");
+            }else{
+                LogBlueUtils.e("ScanCallback：蓝牙扫描监听回调错误停止callBack50");
+                FileWriteUtils.initWrite("ScanCallback：蓝牙扫描监听回调错误停止callBack50");
             }
-            FileWriteUtils.initWrite("ScanCallback：蓝牙扫描监听回调停止callBack50");
         }
     }
     protected void onScan(BluetoothDevice device, byte[] scan,int rssi){
@@ -191,7 +196,7 @@ public abstract class BaseScannerDriver implements ScannerDriver {
                 return;
             }
             if(BleScanUtils.isLog)
-            LogBlueUtils.d("ScanCallback:onLeScan:"+device.getName()+device.getAddress()+":"+ BleUtils.toHexString(scanRecord));
+                LogBlueUtils.d("ScanCallback:onLeScan:"+device.getName()+device.getAddress()+":"+ BleUtils.toHexString(scanRecord));
             onScan(device, scanRecord,rssi);
         }
     };
@@ -232,6 +237,7 @@ public abstract class BaseScannerDriver implements ScannerDriver {
                 FileWriteUtils.initWrite("ScanCallback：蓝牙扫描callback50 onBatchScanResults");
                 LogBlueUtils.d("ScanCallback:onBatchScanResults");
             }
+
         };
     }
 

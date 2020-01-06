@@ -49,7 +49,7 @@ public class BleManage {
         }
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         FileWriteUtils.deleteFile();
-        BleStatusUtil.closeAndroidPDialog();
+//        BleStatusUtil.closeAndroidPDialog();
     }
 
     public MoreBleDriver getMyMoreDriver() {
