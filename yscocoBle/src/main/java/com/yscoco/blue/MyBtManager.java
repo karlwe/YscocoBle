@@ -100,7 +100,7 @@ public class MyBtManager extends BaseBtManager {
             return false;
         }
 //        if(!isConnected) {
-            close();
+        close();
 //        }
         //设为断开可以重连
         isReconnect = true;
@@ -128,7 +128,7 @@ public class MyBtManager extends BaseBtManager {
             mBlueDriver.sendMessage(mMac,CONNECTING);/*连接开始*/
             mBluetoothGatt = device.connectGatt(mContext, false, mGattCallback);
 //            mBluetoothGatt.connect();
-           LogBlueUtils.d( mMac+"device.getBondState==" + device.getBondState());
+            LogBlueUtils.d( mMac+"device.getBondState==" + device.getBondState());
             FileWriteUtils.initWrite(mMac+"device.getBondState==" + device.getBondState());
             return true;
         } catch (Exception e) {
@@ -145,7 +145,7 @@ public class MyBtManager extends BaseBtManager {
     }
 
     public void disConnect(String mac, boolean isReconnect) {
-       LogBlueUtils.d("disconnect："+isReconnect);
+        LogBlueUtils.d("disconnect："+isReconnect);
         this.isReconnect = isReconnect;
         if (mBluetoothAdapter == null || mBluetoothGatt == null) {
             return;
@@ -158,7 +158,9 @@ public class MyBtManager extends BaseBtManager {
             if(isReconnect()){
                 mBlueDriver.sendMessage(mMac,RE_CONNECT);
             }
-            mBluetoothGatt.disconnect();
+            if (mBluetoothGatt != null) {
+                mBluetoothGatt.disconnect();
+            }
         }
     }
     /*设备是否处于重连状态*/
@@ -196,7 +198,7 @@ public class MyBtManager extends BaseBtManager {
 
         @Override
         public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
-           LogBlueUtils.d("连接回调：status" + status + "，newState" + newState + "," + gatt.getDevice().getAddress());
+            LogBlueUtils.d("连接回调：status" + status + "，newState" + newState + "," + gatt.getDevice().getAddress());
             FileWriteUtils.initWrite("连接回调：status" + status + "，newState" + newState + "," + gatt.getDevice().getAddress());
             if (status == BluetoothGatt.GATT_SUCCESS && newState == BluetoothProfile.STATE_CONNECTED) {
                 FileWriteUtils.initWrite("设备连接"+this.toString());
@@ -229,16 +231,16 @@ public class MyBtManager extends BaseBtManager {
         @Override
         public void onServicesDiscovered(BluetoothGatt gatt, int status) {
             if (status == BluetoothGatt.GATT_SUCCESS) {
-               LogBlueUtils.d("发现服务成功");
+                LogBlueUtils.d("发现服务成功");
                 FileWriteUtils.initWrite("发现服务成功");
 //                mBlueDriver.sendMessage(mMac, MyMoreBleDriver.MSG, "设备连接成功");
                 List<BluetoothGattService> services =  gatt.getServices();
                 for(BluetoothGattService service:services){
-                   LogBlueUtils.d("serviceUUID:"+service.getUuid().toString());
+                    LogBlueUtils.d("serviceUUID:"+service.getUuid().toString());
                     FileWriteUtils.initWrite("serviceUUID:"+service.getUuid().toString());
                     if(service.getCharacteristics()!=null){
                         for(BluetoothGattCharacteristic cha:service.getCharacteristics()){
-                           LogBlueUtils.d("characteristicUUID:"+cha.getUuid().toString());
+                            LogBlueUtils.d("characteristicUUID:"+cha.getUuid().toString());
                             FileWriteUtils.initWrite("characteristicUUID:"+cha.getUuid().toString());
                         }
                     }
@@ -246,7 +248,7 @@ public class MyBtManager extends BaseBtManager {
                 startNotification(BleManage.getInstance().getBleConfig().getNotifyList().get(0).getServiceUUID()
                         ,BleManage.getInstance().getBleConfig().getNotifyList().get(0).getCharUUID());
             }else{
-               LogBlueUtils.d("发现服务失败");
+                LogBlueUtils.d("发现服务失败");
                 FileWriteUtils.initWrite("发现服务失败");
                 disConnect(mMac,true);
             }
@@ -266,7 +268,7 @@ public class MyBtManager extends BaseBtManager {
             for (int i = 0; i < data.length; i++) {
                 b.append(String.format("%02X ", data[i]).toString().trim());
             }
-           LogBlueUtils.d("Notify："+mMac+"数据为" + b.toString());
+            LogBlueUtils.d("Notify："+mMac+"数据为" + b.toString());
             FileWriteUtils.initWrite("Notify："+mMac+"数据为" + b.toString());
             mBlueDriver.dataHandler(uuid,mMac,data,NOTIFY_VALUE);
         }
@@ -283,12 +285,12 @@ public class MyBtManager extends BaseBtManager {
                 for (int i = 0; i < data.length; i++) {
                     b.append(String.format("%02X ", data[i]).toString().trim());
                 }
-               LogBlueUtils.d("onCharacteristicRead："+mMac+"数据为" + b.toString());
+                LogBlueUtils.d("onCharacteristicRead："+mMac+"数据为" + b.toString());
                 FileWriteUtils.initWrite("onCharacteristicRead："+mMac+"数据为" + b.toString());
                 mBlueDriver.dataHandler(uuid,mMac,data,READ_VALUE);
             }else{
                 disConnect(mMac,true);
-               LogBlueUtils.d("onCharacteristicRead:失败,characteristic.getService()UUID:"+characteristic.getService().getUuid().toString()+",BluetoothGattCharacteristic UUID:"+characteristic.getUuid().toString());
+                LogBlueUtils.d("onCharacteristicRead:失败,characteristic.getService()UUID:"+characteristic.getService().getUuid().toString()+",BluetoothGattCharacteristic UUID:"+characteristic.getUuid().toString());
                 FileWriteUtils.initWrite("onCharacteristicRead:失败,characteristic.getService()UUID:"+characteristic.getService().getUuid().toString()+",BluetoothGattCharacteristic UUID:"+characteristic.getUuid().toString());
             }
         }
@@ -296,7 +298,7 @@ public class MyBtManager extends BaseBtManager {
         @Override
         public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
             super.onCharacteristicWrite(gatt, characteristic, status);
-           LogBlueUtils.d("onCharacteristicWrite" + status);
+            LogBlueUtils.d("onCharacteristicWrite" + status);
             FileWriteUtils.initWrite("onCharacteristicWrite" + status);
         }
 
@@ -309,7 +311,7 @@ public class MyBtManager extends BaseBtManager {
                 FileWriteUtils.initWrite("开启 BluetoothGattCharacteristic UUID为"+descriptor.getCharacteristic().getUuid().toString().toUpperCase()+"notify异常:"+status);
                 return;
             }
-           LogBlueUtils.d("开启notify成功"+descriptor.getCharacteristic().getUuid().toString().toUpperCase());
+            LogBlueUtils.d("开启notify成功"+descriptor.getCharacteristic().getUuid().toString().toUpperCase());
             FileWriteUtils.initWrite("开启notify成功"+descriptor.getCharacteristic().getUuid().toString().toUpperCase());
             for(int i=0;i<BleManage.getInstance().getBleConfig().getNotifyList().size();i++){
                 if(descriptor.getCharacteristic().getUuid().toString().toUpperCase()
@@ -317,7 +319,7 @@ public class MyBtManager extends BaseBtManager {
                     if(i==(BleManage.getInstance().getBleConfig().getNotifyList().size()-1)){
                         /*数据通道开启成功*/
                         mBlueDriver.sendMessage(mMac,NOTIFY_ON);
-                       LogBlueUtils.d("Notify全部开启，可以开始同步数据");
+                        LogBlueUtils.d("Notify全部开启，可以开始同步数据");
                         FileWriteUtils.initWrite("Notify全部开启，可以开始同步数据");
                     }else{
                         startNotification(BleManage.getInstance().getBleConfig().getNotifyList().get(i+1).getServiceUUID(),
@@ -346,12 +348,12 @@ public class MyBtManager extends BaseBtManager {
         for (int i = 0; i < bb.length; i++) {
             b.append(String.format("%02X ", bb[i]).toString().trim());
         }
-       LogBlueUtils.d("发送:"+cha_uuid+":" + b.toString() +"设备mac:"+ mMac);
+        LogBlueUtils.d("发送:"+cha_uuid+":" + b.toString() +"设备mac:"+ mMac);
         FileWriteUtils.initWrite("发送:" + b.toString() +"设备mac:"+ mMac);
         BluetoothGattService linkLossService;
         BluetoothGattCharacteristic alertLevel = getCharacter(service_uuid, cha_uuid);
         if (alertLevel == null) {
-           LogBlueUtils.d("Service-UUID为"+service_uuid+"Characteristic-UUID为"+cha_uuid+"不存在!");
+            LogBlueUtils.d("Service-UUID为"+service_uuid+"Characteristic-UUID为"+cha_uuid+"不存在!");
             return false;
         }
         boolean status = false;
@@ -359,7 +361,7 @@ public class MyBtManager extends BaseBtManager {
         alertLevel.setValue(bb);
         alertLevel.setWriteType(type);
         status = mBluetoothGatt.writeCharacteristic(alertLevel);
-       LogBlueUtils.d("数据写入状态" + status);
+        LogBlueUtils.d("数据写入状态" + status);
         FileWriteUtils.initWrite("数据写入状态" + status);
         return status;
     }
@@ -422,7 +424,7 @@ public class MyBtManager extends BaseBtManager {
      */
     public synchronized void readCharacteristic(String service_uuid, String cha_uuid) {
         if (mBluetoothAdapter == null || mBluetoothGatt == null) {
-           LogBlueUtils.w("读取数据的通道不存在");
+            LogBlueUtils.w("读取数据的通道不存在");
             FileWriteUtils.initWrite("读取数据的通道不存在");
             return;
         }
@@ -437,13 +439,13 @@ public class MyBtManager extends BaseBtManager {
      */
     public void setCharacteristicNotification(BluetoothGattCharacteristic characteristic, boolean enabled) {
         if (mBluetoothAdapter == null || mBluetoothGatt == null) {
-           LogBlueUtils.d("BluetoothAdapter not initialized");
+            LogBlueUtils.d("BluetoothAdapter not initialized");
             FileWriteUtils.initWrite("BluetoothAdapter not initialized");
             return;
         }
         mBluetoothGatt.setCharacteristicNotification(characteristic, true);
         // Log.e("taa","开启了广播");
-       LogBlueUtils.d("开启广播");
+        LogBlueUtils.d("开启广播");
         BluetoothGattDescriptor descriptor = characteristic.getDescriptor(UUID.fromString(DES_UUID1));
 
         if (descriptor != null&&mBluetoothGatt!=null) {
@@ -458,7 +460,7 @@ public class MyBtManager extends BaseBtManager {
         }
     }
 
-    public void close() {
+    public synchronized void close() {
         if (mBluetoothGatt == null) {
             return;
         }
