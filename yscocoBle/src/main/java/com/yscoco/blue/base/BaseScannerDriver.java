@@ -99,11 +99,11 @@ public abstract class BaseScannerDriver implements ScannerDriver {
 
     @Override
     public void stop() {
-//        if(!isScan){
-//            LogBlueUtils.d("ScanCallback:未开启扫描");
-//            FileWriteUtils.initWrite("ScanCallback：蓝牙未开启扫描");
-//            return ;
-//        }
+        if(!isScan){
+            LogBlueUtils.d("ScanCallback:未开启扫描");
+            FileWriteUtils.initWrite("ScanCallback：蓝牙未开启扫描");
+            return ;
+        }
         isScan = false;
         scanState();
         if(bleManage!=null&&(!bleManage.isEnableBluetooth())){
