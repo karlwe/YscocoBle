@@ -6,12 +6,14 @@ import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.util.Log;
 
 import com.yscoco.blue.imp.MoreBleDriver;
 import com.yscoco.blue.imp.ScannerDriver;
 import com.yscoco.blue.imp.SingleBleDriver;
 import com.yscoco.blue.utils.BleStatusUtil;
 import com.yscoco.blue.utils.FileWriteUtils;
+import com.yscoco.blue.utils.PackageNameUtil;
 
 /**
  * 作者：karl.wei
@@ -41,6 +43,10 @@ public class BleManage {
     }
     public void init(Application application,BleConfig config){
         mContext = application;
+        if(!PackageNameUtil.isEffective(application)){
+            Log.e("yscocoTemp","Temp:"+"应用包名异常无法正常启动，请联系提供方重新编辑AAR！");
+            return ;
+        }
         if (isSupportBle()) {
             bluetoothManager = (BluetoothManager) mContext.getSystemService(Context.BLUETOOTH_SERVICE);
         }
