@@ -202,9 +202,6 @@ public class MyBtManager extends BaseBtManager {
             FileWriteUtils.initWrite("连接回调：status" + status + "，newState" + newState + "," + gatt.getDevice().getAddress());
             if (status == BluetoothGatt.GATT_SUCCESS && newState == BluetoothProfile.STATE_CONNECTED) {
                 FileWriteUtils.initWrite("设备连接"+this.toString());
-                deviceState = DeviceState.CONNECT;
-                isDisconnected = false;
-                mBlueDriver.sendMessage(mMac,CONNECTED);
                 mHandler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -231,6 +228,9 @@ public class MyBtManager extends BaseBtManager {
         @Override
         public void onServicesDiscovered(BluetoothGatt gatt, int status) {
             if (status == BluetoothGatt.GATT_SUCCESS) {
+                deviceState = DeviceState.CONNECT;
+                isDisconnected = false;
+                mBlueDriver.sendMessage(mMac,CONNECTED);
                 LogBlueUtils.d("发现服务成功");
                 FileWriteUtils.initWrite("发现服务成功");
 //                mBlueDriver.sendMessage(mMac, MyMoreBleDriver.MSG, "设备连接成功");
