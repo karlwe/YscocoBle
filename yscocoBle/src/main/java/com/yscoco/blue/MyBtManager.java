@@ -165,7 +165,7 @@ public class MyBtManager extends BaseBtManager {
         }
         if(mac.equals(mMac)){
             LogBlueUtils.e("deviceState:"+deviceState);
-            if(deviceState==DeviceState.CONNECT){
+            if(deviceState==DeviceState.CONNECT||deviceState==DeviceState.CONNECTING){
                 mBlueDriver.sendMessage(mMac,DISCONNECT);/*断开连接开始*/
                 deviceState = DeviceState.DISCONNECT;
                 LogBlueUtils.e("deviceState222:"+deviceState);
