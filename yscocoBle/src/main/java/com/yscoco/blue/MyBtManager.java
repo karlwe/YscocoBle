@@ -463,15 +463,15 @@ public class MyBtManager extends BaseBtManager {
         // Log.e("taa","开启了广播");
         LogBlueUtils.d("开启广播");
         BluetoothGattDescriptor descriptor = characteristic.getDescriptor(UUID.fromString(DES_UUID1));
-
         if (descriptor != null&&mBluetoothGatt!=null) {
             descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
             mBluetoothGatt.writeDescriptor(descriptor);
         }else{
             if(descriptor==null){
                 disConnect(mMac,false);
-                LogBlueUtils.w("BluetoothGattDescriptor UUID为"+DES_UUID1+"的特征值不存在");
-                FileWriteUtils.initWrite("BluetoothGattDescriptor UUID为"+DES_UUID1+"的特征值不存在");
+
+                LogBlueUtils.w("BluetoothGattService UUID为"+characteristic.getService().getUuid().toString()+",BluetoothGattCharacteristic UUID为"+characteristic.getUuid().toString()+",BluetoothGattDescriptor UUID为"+DES_UUID1+"的特征值不存在");
+                FileWriteUtils.initWrite("BluetoothGattService UUID为"+characteristic.getService().getUuid().toString()+",BluetoothGattCharacteristic UUID为"+characteristic.getUuid().toString()+",BluetoothGattDescriptor UUID为"+DES_UUID1+"的特征值不存在");
             }
         }
     }
