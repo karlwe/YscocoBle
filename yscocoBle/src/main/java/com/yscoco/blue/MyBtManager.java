@@ -128,11 +128,10 @@ public class MyBtManager extends BaseBtManager {
         try {
             device = mBluetoothAdapter.getRemoteDevice(mMac.toUpperCase().trim());
             if (device == null) {
-                if(isReconnect()){
-                    mBlueDriver.sendMessage(mMac,RE_CONNECT);
-                }
+                mHandler.post(disConnectRun);
                 return false;
             }
+            this.mDevice = device;
             mHandler.postDelayed(disConnectRun,10000);
             deviceState = DeviceState.CONNECTING;
             mBlueDriver.sendMessage(mMac,CONNECTING);/*连接开始*/
