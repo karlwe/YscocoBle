@@ -102,4 +102,7 @@ public interface SingleBleDriver {
 
     /*设置应用是否处于销毁状态*/
     void setFinish(boolean isFinish);
+
+    /*获取设备信息*/
+    BluetoothDevice getDevice(String mac);
 }

@@ -72,7 +72,7 @@ public abstract class BaseMoreBleDriver implements MoreBleDriver,HandleDriver {
     @Override
     public void disConnect(String mac, boolean isReconnect) {
         if (mBtManagerMaps.get(mac) != null) {
-            Log.e("blue","bluedisConnect"+mBtManagerMaps.size());
+            LogBlueUtils.e("bluedisConnect"+mBtManagerMaps.size());
             mBtManagerMaps.get(mac).disConnect(mac,isReconnect);
         }
     }

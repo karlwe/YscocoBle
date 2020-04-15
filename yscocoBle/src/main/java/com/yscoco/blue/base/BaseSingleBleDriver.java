@@ -14,7 +14,9 @@ import com.yscoco.blue.MyBtManager;
 import com.yscoco.blue.enums.DeviceState;
 import com.yscoco.blue.imp.SingleBleDriver;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
@@ -32,6 +34,7 @@ public abstract class BaseSingleBleDriver implements SingleBleDriver,HandleDrive
     protected MyBtManager mBtManager= null;
     protected boolean isFinish = false;
     protected Set<String> mReconnectSet = new HashSet<String>();
+    protected Map<String,BluetoothDevice> deviceMap = new HashMap<>();
     public BaseSingleBleDriver() {
     }
     public BaseSingleBleDriver(Context c) {
@@ -49,6 +52,7 @@ public abstract class BaseSingleBleDriver implements SingleBleDriver,HandleDrive
                 mBtManager.disConnect(mBtManager.getmMac(),false);
             }
         }
+        deviceMap.put(mac,mDevice);
         mBtManager = new MyBtManager(mContext, mac,mDevice, this);
         mBtManager.setReconnect(isReconnect);
         return mBtManager.connected();
@@ -182,6 +186,11 @@ public abstract class BaseSingleBleDriver implements SingleBleDriver,HandleDrive
     @Override
     public void setFinish(boolean isFinish) {
         this.isFinish = isFinish;
+    }
+
+    @Override
+    public BluetoothDevice getDevice(String mac) {
+        return deviceMap.get(mac);
     }
 
     public Handler mHandler = new Handler(Looper.getMainLooper()) {

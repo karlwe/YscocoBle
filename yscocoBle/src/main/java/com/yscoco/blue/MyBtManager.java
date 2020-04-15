@@ -69,6 +69,12 @@ public class MyBtManager extends BaseBtManager {
     private BluetoothDevice mDevice;
     private HandleDriver mBlueDriver;
     private Handler mHandler = new Handler();
+    Runnable disConnectRun = new Runnable() {
+        @Override
+        public void run() {
+            disConnect(getmMac(),isReconnect());
+        }
+    };
     public MyBtManager(Context c, String mac, BluetoothDevice mDevice, HandleDriver blueDriver) {
         mContext = c;
         mMac = mac;
@@ -122,8 +128,12 @@ public class MyBtManager extends BaseBtManager {
         try {
             device = mBluetoothAdapter.getRemoteDevice(mMac.toUpperCase().trim());
             if (device == null) {
+                if(isReconnect()){
+                    mBlueDriver.sendMessage(mMac,RE_CONNECT);
+                }
                 return false;
             }
+            mHandler.postDelayed(disConnectRun,10000);
             deviceState = DeviceState.CONNECTING;
             mBlueDriver.sendMessage(mMac,CONNECTING);/*连接开始*/
             mBluetoothGatt = device.connectGatt(mContext, false, mGattCallback);
@@ -145,15 +155,17 @@ public class MyBtManager extends BaseBtManager {
     }
 
     public void disConnect(String mac, boolean isReconnect) {
-        LogBlueUtils.d("disconnect："+isReconnect);
+        LogBlueUtils.e("disconnect："+isReconnect);
         this.isReconnect = isReconnect;
         if (mBluetoothAdapter == null || mBluetoothGatt == null) {
             return;
         }
         if(mac.equals(mMac)){
-            if(deviceState!=DeviceState.CONNECT){
+            LogBlueUtils.e("deviceState:"+deviceState);
+            if(deviceState==DeviceState.CONNECT){
                 mBlueDriver.sendMessage(mMac,DISCONNECT);/*断开连接开始*/
                 deviceState = DeviceState.DISCONNECT;
+                LogBlueUtils.e("deviceState222:"+deviceState);
             }
             if(isReconnect()){
                 mBlueDriver.sendMessage(mMac,RE_CONNECT);
@@ -200,6 +212,7 @@ public class MyBtManager extends BaseBtManager {
         public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
             LogBlueUtils.d("连接回调：status" + status + "，newState" + newState + "," + gatt.getDevice().getAddress());
             FileWriteUtils.initWrite("连接回调：status" + status + "，newState" + newState + "," + gatt.getDevice().getAddress());
+            mHandler.removeCallbacks(disConnectRun);
             if (status == BluetoothGatt.GATT_SUCCESS && newState == BluetoothProfile.STATE_CONNECTED) {
                 FileWriteUtils.initWrite("设备连接"+this.toString());
                 mHandler.postDelayed(new Runnable() {
