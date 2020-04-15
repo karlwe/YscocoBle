@@ -72,6 +72,8 @@ public class MyBtManager extends BaseBtManager {
     Runnable disConnectRun = new Runnable() {
         @Override
         public void run() {
+            LogBlueUtils.e("超时链接断开重连");
+            FileWriteUtils.initWrite("超时链接断开重连");
             disConnect(getmMac(),isReconnect());
         }
     };
@@ -128,6 +130,8 @@ public class MyBtManager extends BaseBtManager {
         try {
             device = mBluetoothAdapter.getRemoteDevice(mMac.toUpperCase().trim());
             if (device == null) {
+                LogBlueUtils.e("设备未初始化成功，断开连接");
+                FileWriteUtils.initWrite("设备未初始化成功，断开连接");
                 mHandler.post(disConnectRun);
                 return false;
             }
