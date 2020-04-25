@@ -38,6 +38,7 @@ public class MyBtManager extends BaseBtManager {
     private BluetoothAdapter mBluetoothAdapter;// 蓝牙适配器
     TimerTask task;
     Timer rssiTimer;
+    public int sendFail = 0;
     /**
      * mac地址
      */
@@ -82,6 +83,7 @@ public class MyBtManager extends BaseBtManager {
         mMac = mac;
         mBlueDriver = blueDriver;
         this.mDevice = mDevice;
+        initialize();
     }
     public BluetoothDevice getmDevice() {
         return mDevice;
@@ -92,19 +94,27 @@ public class MyBtManager extends BaseBtManager {
     }
     public boolean connected(){
         if(deviceState==DeviceState.CONNECT||deviceState==DeviceState.CONNECTING){
+            LogBlueUtils.e("链接中"+deviceState);
+            FileWriteUtils.initWrite("98链接中"+deviceState);
             return true;
         }
         //初始化
         if (!initialize()) {
+            LogBlueUtils.e("初始化失败");
+            FileWriteUtils.initWrite("104初始化失败");
             return false;
         }
 
         if (!mBluetoothAdapter.isEnabled()) {
+            LogBlueUtils.e("蓝牙未打开");
+            FileWriteUtils.initWrite("1110蓝牙未打开");
             return false;
         }
 
         // 有为空的情况就直接返回
         if (mBluetoothAdapter == null || mMac == null) {
+            LogBlueUtils.e("适配器为空："+mBluetoothAdapter);
+            FileWriteUtils.initWrite("117适配器为空："+mBluetoothAdapter);
             return false;
         }
 //        if(!isConnected) {
@@ -125,27 +135,30 @@ public class MyBtManager extends BaseBtManager {
 //           LogBlueUtils.d( "Trying to use an existing mBluetoothGatt for connection.");
 //            mBluetoothGatt.connect();
 //        }
-
         final BluetoothDevice device;
         try {
             device = mBluetoothAdapter.getRemoteDevice(mMac.toUpperCase().trim());
-            if (device == null) {
+            if(device==null){
                 LogBlueUtils.e("设备未初始化成功，断开连接");
                 FileWriteUtils.initWrite("设备未初始化成功，断开连接");
                 mHandler.post(disConnectRun);
                 return false;
             }
-            this.mDevice = device;
-            mHandler.postDelayed(disConnectRun,10000);
+            if(mDevice==null){
+                mDevice = device;
+            }
+            mHandler.postDelayed(disConnectRun,15000);
             deviceState = DeviceState.CONNECTING;
             mBlueDriver.sendMessage(mMac,CONNECTING);/*连接开始*/
-            mBluetoothGatt = device.connectGatt(mContext, false, mGattCallback);
-//            mBluetoothGatt.connect();
-            LogBlueUtils.d( mMac+"device.getBondState==" + device.getBondState());
-            FileWriteUtils.initWrite(mMac+"device.getBondState==" + device.getBondState());
+            mBluetoothGatt = mDevice.connectGatt(mContext, false, mGattCallback);
+//            mBluetoothGatt.connect();e
+            LogBlueUtils.e( mMac+"device.getBondState==" + mDevice.getBondState());
+            FileWriteUtils.initWrite(mMac+"device.getBondState==" + mDevice.getBondState());
             return true;
         } catch (Exception e) {
             e.printStackTrace();
+            LogBlueUtils.e( "设备出现异常==" +e.toString()  );
+            FileWriteUtils.initWrite("161设备出现异常==" +e.toString()  );
         }
         return true;
     }
@@ -191,16 +204,19 @@ public class MyBtManager extends BaseBtManager {
         // For API level 18 and above, get a reference to BluetoothAdapter
         // through
         // BluetoothManager.
-        if (mBluetoothManager == null) {
-            mBluetoothManager = (BluetoothManager) mContext.getSystemService(Context.BLUETOOTH_SERVICE);
+//        if (mBluetoothManager == null) {
             if (mBluetoothManager == null) {
-                // Log.e("error", "Unable to initialize BluetoothManager.");
+                mBluetoothManager = (BluetoothManager) mContext.getSystemService(Context.BLUETOOTH_SERVICE);
+               if(mBluetoothManager==null){
+                   return false;
+               }
+            }
+//        }
+        if(mBluetoothAdapter==null) {
+            mBluetoothAdapter = mBluetoothManager.getAdapter();
+            if (mBluetoothAdapter == null) {
                 return false;
             }
-        }
-        mBluetoothAdapter = mBluetoothManager.getAdapter();
-        if (mBluetoothAdapter == null) {
-            return false;
         }
         return true;
     }
@@ -377,6 +393,15 @@ public class MyBtManager extends BaseBtManager {
         alertLevel.setValue(bb);
         alertLevel.setWriteType(type);
         status = mBluetoothGatt.writeCharacteristic(alertLevel);
+        if(status){
+            sendFail =0;
+        }else{
+            ++sendFail;
+            if(sendFail>4){
+                sendFail =0;
+                disConnect(mMac,isReconnect());
+            }
+        }
         LogBlueUtils.d("数据写入状态" + status);
         FileWriteUtils.initWrite("数据写入状态" + status);
         return status;
