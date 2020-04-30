@@ -392,7 +392,9 @@ public class MyBtManager extends BaseBtManager {
         int storedLevel = alertLevel.getWriteType();
         alertLevel.setValue(bb);
         alertLevel.setWriteType(type);
-        status = mBluetoothGatt.writeCharacteristic(alertLevel);
+        if(mBluetoothGatt!=null) {
+            status = mBluetoothGatt.writeCharacteristic(alertLevel);
+        }
         if(status){
             sendFail =0;
         }else{
@@ -402,7 +404,7 @@ public class MyBtManager extends BaseBtManager {
                 disConnect(mMac,isReconnect());
             }
         }
-        LogBlueUtils.d("数据写入状态" + status);
+        LogBlueUtils.e("数据写入状态" + status);
         FileWriteUtils.initWrite("数据写入状态" + status);
         return status;
     }
