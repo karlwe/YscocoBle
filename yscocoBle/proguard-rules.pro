@@ -134,6 +134,7 @@
 -keep class com.yscoco.blue.BleConfig {*;}
 -keep class com.yscoco.blue.BleManage {*;}
 -keep class com.yscoco.blue.imp.** {*;}
+-keep class com.yscoco.blue.receiver.** {*;}
 -keep class com.yscoco.blue.listener.** {*;}
 -keep class com.yscoco.blue.utils.BleUtils {*;}
 -keep class com.yscoco.blue.utils.FileWriteUtils {*;}

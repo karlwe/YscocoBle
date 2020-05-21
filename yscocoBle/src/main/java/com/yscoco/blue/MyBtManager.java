@@ -274,6 +274,12 @@ public class MyBtManager extends BaseBtManager {
                         for(BluetoothGattCharacteristic cha:service.getCharacteristics()){
                             LogBlueUtils.d("characteristicUUID:"+cha.getUuid().toString());
                             FileWriteUtils.initWrite("characteristicUUID:"+cha.getUuid().toString());
+                            if(cha.getDescriptors()!=null){
+                                for(BluetoothGattDescriptor des:cha.getDescriptors()) {
+                                    LogBlueUtils.d("BluetoothGattDescriptorUUID:" + des.getUuid().toString());
+                                    FileWriteUtils.initWrite("BluetoothGattDescriptorUUID:" + des.getUuid().toString());
+                                }
+                            }
                         }
                     }
                 }
@@ -495,8 +501,20 @@ public class MyBtManager extends BaseBtManager {
             mBluetoothGatt.writeDescriptor(descriptor);
         }else{
             if(descriptor==null){
-                disConnect(mMac,false);
-
+                for(int i=0;i<BleManage.getInstance().getBleConfig().getNotifyList().size();i++){
+                    if(characteristic.getUuid().toString().toUpperCase()
+                            .equals(BleManage.getInstance().getBleConfig().getNotifyList().get(i).getCharUUID().toUpperCase())) {
+                        if(i==(BleManage.getInstance().getBleConfig().getNotifyList().size()-1)){
+                            /*数据通道开启成功*/
+                            mBlueDriver.sendMessage(mMac,NOTIFY_ON);
+                            LogBlueUtils.d("Notify全部开启，可以开始同步数据");
+                            FileWriteUtils.initWrite("Notify全部开启，可以开始同步数据");
+                        }else{
+                            startNotification(BleManage.getInstance().getBleConfig().getNotifyList().get(i+1).getServiceUUID(),
+                                    BleManage.getInstance().getBleConfig().getNotifyList().get(i+1).getCharUUID());
+                        }
+                    }
+                }
                 LogBlueUtils.w("BluetoothGattService UUID为"+characteristic.getService().getUuid().toString()+",BluetoothGattCharacteristic UUID为"+characteristic.getUuid().toString()+",BluetoothGattDescriptor UUID为"+DES_UUID1+"的特征值不存在");
                 FileWriteUtils.initWrite("BluetoothGattService UUID为"+characteristic.getService().getUuid().toString()+",BluetoothGattCharacteristic UUID为"+characteristic.getUuid().toString()+",BluetoothGattDescriptor UUID为"+DES_UUID1+"的特征值不存在");
             }
