@@ -203,8 +203,11 @@ public abstract class BaseScannerDriver implements ScannerDriver {
     @SuppressLint("NewApi")
     private void initLoliScan(){
         if (scanSettings == null) {
+            //指定蓝牙的方式，这里设置的ScanSettings.SCAN_MODE_LOW_POWER是比较节电的扫描方式，而且在效率方面没有很大的影响，而且相当省电
             ScanSettings.Builder builder = new ScanSettings.Builder();
-            builder.setScanMode(SCAN_MODE_LOW_LATENCY);
+            builder.setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY);
+//            builder.setMatchMode(ScanSettings.MATCH_MODE_AGGRESSIVE);
+//            builder.setCallbackType(ScanSettings.CALLBACK_TYPE_ALL_MATCHES);
             scanSettings = builder.build();
         }
         callBack50 = new ScanCallback(){

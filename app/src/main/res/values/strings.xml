@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">YscocoBle</string>
+    <string name="un_support_ble">你的手机不支持配套设备，是否继续？</string>
+    <string name="warn_info_text">警告信息</string>
+    <string name="continue_text">继续</string>
+    <string name="exit_tips">再按一下返回键退出应用</string>
 </resources>

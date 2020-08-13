@@ -1,22 +1,18 @@
 package com.yscoco.yscocoble;
 
-import android.graphics.Typeface;
+import android.content.Context;
+import android.os.Environment;
 import android.util.DisplayMetrics;
 
+import com.ys.module.log.LogUtils;
 import com.yscoco.blue.BleConfig;
 import com.yscoco.blue.BleManage;
 import com.yscoco.blue.app.BaseBlueApplication;
-import com.yscoco.blue.base.BaseMoreBleDriver;
 import com.yscoco.blue.bean.NotifyUUIDBean;
-import com.yscoco.blue.imp.MoreBleDriver;
 import com.yscoco.blue.imp.SingleBleDriver;
-import com.yscoco.blue.utils.FileWriteUtils;
-import com.yscoco.blue.utils.LogBlueUtils;
-
-import java.lang.reflect.Field;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
 /**
  * 作者：karl.wei
  * 创建日期： 2017/8/9 0009 14:11
@@ -27,6 +23,7 @@ import java.util.List;
 public class MyApp extends BaseBlueApplication {
 
     private static MyApp instance;
+//    private RefWatcher mRefWatcher;
 
     private DisplayMetrics displayMetrics = null;
 
@@ -45,41 +42,39 @@ public class MyApp extends BaseBlueApplication {
     public void onCreate() {
         super.onCreate();
         instance = this;
-        initBle();
-        setSize();
-    }
-    private void setSize() {
-        Typeface mTypeface = Typeface.createFromAsset(getAssets(), "fonts/PingFang Regular_0.ttf");
 
-        try {
-            Field field = Typeface.class.getDeclaredField("MONOSPACE");
-            field.setAccessible(true);
-            field.set(null, mTypeface);
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
+        /*关闭日志*/
+        closeLog(false);
+        initBle();
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {// save in SD card first
+            Constans.RootPath = Environment.getExternalStorageDirectory() + "/Bracelet";
+        } else {
+            Constans.RootPath = this.getFilesDir().getAbsolutePath() + File.separator + "Bracelet";
         }
     }
+
     private void initBle() {
+
         BleConfig config = new BleConfig();
         config.SERVICE_UUID1 = BleConstans.SERVICE_UUID1;
         config.CHA_NOTIFY =    BleConstans.CHA_NOTIFY;
         config.CHA_WRITE =     BleConstans.CHA_WRITE;
         List<NotifyUUIDBean> beansList = new ArrayList<NotifyUUIDBean>();
-        beansList.add(new NotifyUUIDBean(BleConstans.SERVICE_UUID1,BleConstans.CHA_NOTIFY));
         beansList.add(new NotifyUUIDBean(BleConstans.SERVICE_BATTERY_UUID,BleConstans.CHA_BATTERY_NOTIFY));
+        beansList.add(new NotifyUUIDBean(BleConstans.SERVICE_UUID1,BleConstans.CHA_NOTIFY));
         config.setNotifyList(beansList);
-        config.setPROJECT_NAME("yscoco");//本地log日志名称
-        config.setCloseFile(false);//是否开启写入本地log日志
-        config.setBleLog(true,"BLE:");//控制台显示打印
+        config.setFileInfo(false,"yykj","yykj_walkfit");
+        config.setBleLog(true,"yykjBracelet");
+        config.setScanBleLog(true);
         BleManage.getInstance().init(this,config);
     }
-
-    public static MoreBleDriver getBleDriver() {
-        return BleManage.getInstance().getMyMoreDriver();
+    public static SingleBleDriver getDriver(){
+        return BleManage.getInstance().getMySingleDriver();
     }
-
+    /*关闭log*/
+    private void closeLog(boolean isOpen) {
+        LogUtils.setLog(isOpen);/*关闭常用Log日志，false为关闭，true为开启*/
+    }
 
     //获取应用的data/data/....File目录
     public String getFilesDirPath() {
@@ -108,4 +103,6 @@ public class MyApp extends BaseBlueApplication {
     public void setDisplayMetrics(DisplayMetrics DisplayMetrics) {
         this.displayMetrics = DisplayMetrics;
     }
+
+
 }

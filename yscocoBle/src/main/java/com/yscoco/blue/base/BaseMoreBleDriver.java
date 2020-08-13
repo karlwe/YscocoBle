@@ -193,6 +193,10 @@ public abstract class BaseMoreBleDriver implements MoreBleDriver,HandleDriver {
     public void readData(String mac) {
         if (mBtManagerMaps.get(mac) != null) {
              mBtManagerMaps.get(mac).readData();
+        }else{
+            for(MyBtManager btManager:mBtManagerMaps.values()){
+                btManager.readData();
+            }
         }
     }
 
@@ -200,6 +204,10 @@ public abstract class BaseMoreBleDriver implements MoreBleDriver,HandleDriver {
     public void readData(String mac, String serviceUUID, String charUUID) {
         if (mBtManagerMaps.get(mac) != null) {
             mBtManagerMaps.get(mac).readData(serviceUUID,charUUID);
+        }else{
+            for(MyBtManager btManager:mBtManagerMaps.values()){
+                btManager.readData(serviceUUID,charUUID);
+            }
         }
     }
     public int getConnectSize(){
