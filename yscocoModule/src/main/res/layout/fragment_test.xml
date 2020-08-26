@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#50f0">
+    <TextView
+        android:id="@+id/tv_step"
+        style="@style/tv_gene_three_style"
+        android:text="下一步"/>
+</LinearLayout>

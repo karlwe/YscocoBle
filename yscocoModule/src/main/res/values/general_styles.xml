@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <style name="et_genal_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@null</item>
+        <item name="android:clickable">false</item>
+        <item name="android:paddingLeft">@dimen/DIMEN_5PX</item>
+        <item name="android:textSize">@dimen/text_size28</item>
+        <item name="android:textColor">@color/input_content_color</item>
+        <item name="android:textColorHint">@color/input_hint_color</item>
+        <item name="android:textCursorDrawable">@drawable/shape_color_cursor</item>
+    </style>
+    <!--多行的输入框，行间距1.3倍-->
+    <style name="tv_genal_line_style" parent="et_genal_style">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">left|top</item>
+        <item name="android:paddingLeft">@dimen/DIMEN_20PX</item>
+        <item name="android:paddingRight">@dimen/DIMEN_20PX</item>
+        <item name="android:paddingTop">@dimen/DIMEN_30PX</item>
+        <item name="android:paddingBottom">@dimen/DIMEN_30PX</item>
+        <item name="android:lineSpacingMultiplier">1.3</item>
+    </style>
+    <!--登录注册，找回密码输入框样式-->
+    <!-- 编辑框样式 -->
+    <style name="et_info_style" parent="et_genal_style">
+        <item name="android:layout_marginLeft">@dimen/broder_distance_left_value</item>
+        <item name="android:layout_marginRight">@dimen/broder_distance_left_value</item>
+        <item name="android:singleLine">true</item>
+    </style>
+    <style name="btn_genal_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/DIMEN_110PX</item>
+        <item name="android:layout_marginLeft">@dimen/broder_distance_left_value</item>
+        <item name="android:layout_marginRight">@dimen/broder_distance_left_value</item>
+        <item name="android:textSize">@dimen/text_size32</item>
+        <item name="android:textColor">@color/btn_text_color</item>
+    </style>
+    <!--圆角button style -->
+    <style name="btn_round_style" parent="btn_genal_style">
+        <item name="android:background">@drawable/btn_border_round_green</item>
+    </style>
+    <!--圆弧 button style -->
+    <style name="btn_radius_style" parent="btn_genal_style">
+        <item name="android:background">@drawable/btn_border_radius_green</item>
+    </style>
+    <style name="ActionSheetDialogAnimationxx" parent="@android:style/Animation.Dialog">
+    <item name="android:windowEnterAnimation">@anim/dialog_enter_anim</item>
+    <item name="android:windowExitAnimation">@anim/dialog_exit_anim</item>
+    </style>
+
+    <!--通用的文字样式-->
+    <style name="wrap_genal_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        </style>
+    <!--通用样式文字,454545，大小28样式-->
+    <style name="tv_gene_two_style" parent="wrap_genal_style">
+        <item name="android:textColor">@color/black_two_color</item>
+        <item name="android:lineSpacingMultiplier">1.3</item>
+        <item name="android:textSize">@dimen/text_size30</item>
+    </style>
+    <!--通用样式文字,#969696，大小24 样式-->
+    <style name="tv_gene_three_style" parent="wrap_genal_style">
+        <item name="android:textColor">@color/black_three_color</item>
+        <item name="android:lineSpacingMultiplier">1.3</item>
+        <item name="android:textSize">@dimen/text_size26</item>
+    </style>
+</resources>

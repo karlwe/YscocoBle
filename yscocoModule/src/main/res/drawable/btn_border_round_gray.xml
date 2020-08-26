@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--圆角设置radius的值为大小的一半
+    shape 可以设置4个属性 android:shape="rectangle|oval|line|ring"
+    rectangle 矩形，oval椭圆，line，line线性，ring 圆环
+    corners可以设置4个角度的圆角度数 android:topLeftRadius="20dp"-->
+    <item android:state_pressed="true">
+        <shape>
+            <gradient android:angle="180" android:endColor="@color/round_color_for_gray_left" android:startColor="@color/round_color_for_gray_right" />
+            <corners android:radius="@dimen/DIMEN_43PX" />
+        </shape>
+    </item>
+    <item android:state_focused="true">
+        <shape>
+            <gradient android:angle="180" android:endColor="@color/round_color_for_gray_left" android:startColor="@color/round_color_for_gray_right" />
+            <corners android:radius="@dimen/DIMEN_43PX" />
+        </shape>
+    </item>
+    <item>
+        <shape>
+            <gradient android:angle="180" android:endColor="@color/round_color_for_gray_left" android:startColor="@color/round_color_for_gray_right" />
+            <corners android:radius="@dimen/DIMEN_43PX" />
+        </shape>
+    </item>
+
+</selector>

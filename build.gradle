@@ -23,7 +23,18 @@ allprojects {
         maven { url 'https://jitpack.io' }
     }
 }
-
+//版本约束
+ext {
+    var = [
+            // SDK And Tools
+            minSdkVersion        : 19,
+            targetSdkVersion     : 28,
+            compileSdkVersion    : 28,
+            buildToolsVersion    : "26.0.2",
+            //Dependencies
+            supportLibraryVersion: "26.0.2"
+    ]
+}
 task clean(type: Delete) {
     delete rootProject.buildDir
 }

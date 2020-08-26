@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--圆角设置radius的值为大小的一半
+    shape 可以设置4个属性 android:shape="rectangle|oval|line|ring"
+    rectangle 矩形，oval椭圆，line，line线性，ring 圆环
+    corners可以设置4个角度的圆角度数 android:topLeftRadius="20dp"-->
+    <item >
+        <shape>
+            <stroke android:color="@color/box_border_color" android:width="@dimen/DIMEN_2PX"></stroke>
+            <solid android:color="@color/white_bg_color"></solid>
+            <corners android:radius="@dimen/DIMEN_5PX" />
+        </shape>
+    </item>
+
+</selector>

@@ -44,7 +44,7 @@ public class BleManage {
     public void init(Application application,BleConfig config){
         mContext = application;
         if(!PackageNameUtil.isEffective(application)){
-            Log.e("yscocoTemp","Temp:"+"应用包名异常无法正常启动，请联系提供方重新编辑AAR！");
+            Log.e("yscoco",""+"应用包名异常无法正常启动，请联系提供方重新编辑AAR！");
             return ;
         }
         if (isSupportBle()) {

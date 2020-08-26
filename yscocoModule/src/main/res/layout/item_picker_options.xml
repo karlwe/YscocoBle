@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/page_bg_color"
+        >
+
+        <TextView
+            android:layout_marginLeft="@dimen/DIMEN_30PX"
+            android:layout_marginTop="@dimen/DIMEN_10PX"
+            android:layout_marginBottom="@dimen/DIMEN_10PX"
+            android:id="@+id/tv_cancel"
+            style="@style/item_tv_left_style"
+            android:layout_width="@dimen/DIMEN_120PX"
+            android:layout_height="@dimen/DIMEN_60PX"
+            android:gravity="center"
+            android:text="@string/cancel_text"
+            android:textColor="@color/black_two_color" />
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/DIMEN_60PX"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:maxLines="1"
+            android:textColor="@color/input_hint_color" />
+
+        <TextView
+            android:layout_marginRight="@dimen/DIMEN_30PX"
+            android:id="@+id/tv_finish"
+            style="@style/item_tv_left_style"
+            android:layout_width="@dimen/DIMEN_120PX"
+            android:layout_height="@dimen/DIMEN_60PX"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:text="@string/config_text"
+            android:textColor="@color/black_two_color" />
+
+    </RelativeLayout>
+
+    <!--此部分需要完整复制过去，删减或者更改ID会导致初始化找不到内容而报空-->
+    <LinearLayout
+        android:id="@+id/optionspicker"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:orientation="horizontal">
+
+        <com.bigkoo.pickerview.lib.WheelView
+            android:id="@+id/options1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <com.bigkoo.pickerview.lib.WheelView
+            android:id="@+id/options2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <com.bigkoo.pickerview.lib.WheelView
+            android:id="@+id/options3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+</LinearLayout>
