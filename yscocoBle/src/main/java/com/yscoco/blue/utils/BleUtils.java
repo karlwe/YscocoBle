@@ -41,6 +41,19 @@ public class BleUtils {
         return buffer.toString().toUpperCase();
     }
     /**
+     * 数组转成十六进制字符串
+     * @param  b byte数组
+     * @return HexString
+     */
+    public static String toHexString(byte[] b,String separator){
+        StringBuffer buffer = new StringBuffer();
+        for (int i = 0; i < b.length-1; ++i){
+            buffer.append(toHexString(b[i])+separator);
+        }
+        buffer.append(b[b.length-1]);
+        return buffer.toString().toUpperCase();
+    }
+    /**
      * byte转成十六进制字符串
      * @param  b byte
      * @return HexString

@@ -54,6 +54,16 @@ public class FileWriteUtils {
     }
     // 将字符串写入到文本文件中
     public synchronized static void writeTxtToFile(String strcontent, String filePath, String fileName) {
+        writeTxtToFile(strcontent,filePath,fileName,true);
+    }
+    /**
+     * 将字符串写入到文本文件中
+     * @param  strcontent  写入内容
+     * @param    filePath   文件路径
+     * @param fileName 文件名称
+     * @param isAddDate 是否在每次写入前加入当前时间
+     */
+    public synchronized static void writeTxtToFile(String strcontent, String filePath, String fileName,boolean isAddDate) {
         /*判断是否开启了本地文件写入*/
         if(BleManage.getInstance().getBleConfig().isCloseFile()) {
             return;
@@ -63,7 +73,7 @@ public class FileWriteUtils {
 
         String strFilePath = filePath+fileName;
         // 每次写入时，都换行写
-        String strContent = getDate()+":"+strcontent + "\r\n";
+        String strContent = (isAddDate?getDate():"")+":"+strcontent + "\r\n";
         try {
             File file = new File(strFilePath);
             if (!file.exists()) {
@@ -80,7 +90,6 @@ public class FileWriteUtils {
 //            LogBlueUtils.d("文件名称写入错误");
         }
     }
-
     // 生成文件
     public synchronized static File makeFilePath(String filePath, String fileName) {
         File file = null;

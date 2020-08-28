@@ -44,7 +44,7 @@ public class MyApp extends BaseBlueApplication {
         instance = this;
 
         /*关闭日志*/
-        closeLog(false);
+        closeLog(true);
         initBle();
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {// save in SD card first
             Constans.RootPath = Environment.getExternalStorageDirectory() + "/Bracelet";
@@ -63,8 +63,8 @@ public class MyApp extends BaseBlueApplication {
         beansList.add(new NotifyUUIDBean(BleConstans.SERVICE_BATTERY_UUID,BleConstans.CHA_BATTERY_NOTIFY));
         beansList.add(new NotifyUUIDBean(BleConstans.SERVICE_UUID1,BleConstans.CHA_NOTIFY));
         config.setNotifyList(beansList);
-        config.setFileInfo(false,"yykj","yykj_walkfit");
-        config.setBleLog(true,"yykjBracelet");
+        config.setFileInfo(false,"yscoco","yscoco");
+        config.setBleLog(true,"yscoco");
         config.setScanBleLog(true);
         BleManage.getInstance().init(this,config);
     }
