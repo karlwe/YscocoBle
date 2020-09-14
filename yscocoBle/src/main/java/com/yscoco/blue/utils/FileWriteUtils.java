@@ -45,27 +45,39 @@ public class FileWriteUtils {
         String filePath = filePaths;
         String fileName = fileNameStart+getDate(0)+".txt";
 
-        writeTxtToFile(value, filePath, fileName);
+        initWrite(true,value, fileName);
     }
     public synchronized static  void initWrite(String value) {
         String filePath = filePaths;
         String fileName = BleManage.getInstance().getBleConfig().getPROJECT_NAME()+getDate(0)+".txt";
-        writeTxtToFile(value, filePath, fileName);
+        initWrite(value);
+    }
+    public synchronized static  void initWrite(boolean isOpenCloseSwitch,String value,String fileNameStart) {
+        String filePath = filePaths;
+        String fileName = fileNameStart+getDate(0)+".txt";
+
+        writeTxtToFile(isOpenCloseSwitch,value, filePath, fileName);
+    }
+    public synchronized static  void initWrite(boolean isOpenCloseSwitch,String value) {
+        String filePath = filePaths;
+        String fileName = BleManage.getInstance().getBleConfig().getPROJECT_NAME()+getDate(0)+".txt";
+        writeTxtToFile(isOpenCloseSwitch,value, filePath, fileName);
     }
     // 将字符串写入到文本文件中
-    public synchronized static void writeTxtToFile(String strcontent, String filePath, String fileName) {
-        writeTxtToFile(strcontent,filePath,fileName,true);
+    public synchronized static void writeTxtToFile(boolean isOpenCloseSwitch,String strcontent, String filePath, String fileName) {
+        writeTxtToFile(isOpenCloseSwitch,strcontent,filePath,fileName,true);
     }
     /**
      * 将字符串写入到文本文件中
+     * @param isOpenCloseSwitch  是否开启关闭文件写入的判断
      * @param  strcontent  写入内容
      * @param    filePath   文件路径
      * @param fileName 文件名称
      * @param isAddDate 是否在每次写入前加入当前时间
      */
-    public synchronized static void writeTxtToFile(String strcontent, String filePath, String fileName,boolean isAddDate) {
+    public synchronized static void writeTxtToFile(boolean isOpenCloseSwitch,String strcontent, String filePath, String fileName,boolean isAddDate) {
         /*判断是否开启了本地文件写入*/
-        if(BleManage.getInstance().getBleConfig().isCloseFile()) {
+        if(BleManage.getInstance().getBleConfig().isCloseFile()&&isOpenCloseSwitch) {
             return;
         }
         //生成文件夹之后，再生成文件，不然会出错
