@@ -41,16 +41,22 @@ public class FileWriteUtils {
             }
         }
     }
+
+    public synchronized static  void initWrite(String value) {
+        String filePath = filePaths;
+        String fileName = BleManage.getInstance().getBleConfig().getPROJECT_NAME()+getDate(0)+".txt";
+        initWrite(true,value);
+    }
+    public synchronized static  void initWrite(boolean isOpenCloseSwitch,String value) {
+        String filePath = filePaths;
+        String fileName = BleManage.getInstance().getBleConfig().getPROJECT_NAME()+getDate(0)+".txt";
+        writeTxtToFile(isOpenCloseSwitch,value, filePath, fileName);
+    }
     public synchronized static  void initWrite(String value,String fileNameStart) {
         String filePath = filePaths;
         String fileName = fileNameStart+getDate(0)+".txt";
 
         initWrite(true,value, fileName);
-    }
-    public synchronized static  void initWrite(String value) {
-        String filePath = filePaths;
-        String fileName = BleManage.getInstance().getBleConfig().getPROJECT_NAME()+getDate(0)+".txt";
-        initWrite(value);
     }
     public synchronized static  void initWrite(boolean isOpenCloseSwitch,String value,String fileNameStart) {
         String filePath = filePaths;
@@ -58,14 +64,18 @@ public class FileWriteUtils {
 
         writeTxtToFile(isOpenCloseSwitch,value, filePath, fileName);
     }
-    public synchronized static  void initWrite(boolean isOpenCloseSwitch,String value) {
-        String filePath = filePaths;
-        String fileName = BleManage.getInstance().getBleConfig().getPROJECT_NAME()+getDate(0)+".txt";
-        writeTxtToFile(isOpenCloseSwitch,value, filePath, fileName);
+    // 将字符串写入到文本文件中
+    public synchronized static void writeTxtToFile(String strcontent, String filePath, String fileName) {
+        writeTxtToFile(true,strcontent,filePath,fileName,true);
     }
     // 将字符串写入到文本文件中
     public synchronized static void writeTxtToFile(boolean isOpenCloseSwitch,String strcontent, String filePath, String fileName) {
         writeTxtToFile(isOpenCloseSwitch,strcontent,filePath,fileName,true);
+    }
+
+    // 将字符串写入到文本文件中
+    public synchronized static void writeTxtToFile(String strcontent, String filePath, String fileName,boolean isAddDate) {
+        writeTxtToFile(strcontent,filePath,fileName,isAddDate);
     }
     /**
      * 将字符串写入到文本文件中
