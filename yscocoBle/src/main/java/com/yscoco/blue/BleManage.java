@@ -42,11 +42,11 @@ public class BleManage {
         return mBleManage;
     }
     public void init(Application application,BleConfig config){
-        mContext = application;
         if(!PackageNameUtil.isEffective(application)){
             Log.e("yscoco",""+"应用包名异常无法正常启动，请联系提供方重新编辑AAR！");
             return ;
         }
+        mContext = application;
         if (isSupportBle()) {
             bluetoothManager = (BluetoothManager) mContext.getSystemService(Context.BLUETOOTH_SERVICE);
         }
